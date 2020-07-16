@@ -1,0 +1,149 @@
+-------------------------------------------------------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  H:\Other\Paper Codes for Uploading\BPEA\Firms90_10_GSS_Materials\Table_8\table8.log
+  log type:  text
+ opened on:   6 Mar 2020, 18:30:11
+
+. 
+. /***
+> 
+> Read in data from BLS special tabulations. Sharing data is allowed.
+> 
+> Note from BLS:
+> 
+> The enclosed spreadsheet contains the ratio of the 90th and 10th percentile total compensation estimates for private industry by Census division between Ma
+> rch 1982 and March 2015. These estimates were constructed using the Employer Costs for Employee Compensation data, a product of the National Compensation S
+> urvey (NCS).  The NCS has recently transitioned from a locality based five sample rotation group design to a national based three sample rotation group des
+> ign.  The change was necessitated as part of the enactment of the 2011 Federal Budget, where the Locality Pay Survey portion of the NCS was eliminated.  Th
+> e classification of the nine census divisions have not changed but the sampling methodology and sample rotation has changed.  With the December 2015 estima
+> tes all private industry sample rotation groups are now part of the national sample design and a third of the sample will rotate each year, with the Decemb
+> er reference period.  If you cite these data please indicate that they are unpublished estimates from the Bureau of Labor Statistics. 
+>  
+> For more information on the sample design changes please see the following resources: 
+>  
+> Handbook of methods: http://www.bls.gov/opub/hom/pdf/homch8.pdf
+>  
+> Evaluating Sample Design Issues in the National Compensation Survey: http://www.bls.gov/osmr/pdf/st100220.pdf
+>  
+> ***/
+. 
+. import delimited using Input/90_10_percent_dissemination_csv.csv
+(4 vars, 306 obs)
+
+. summ
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+        year |        306      1998.5    9.826778       1982       2015
+referencem~h |          0
+censusdivi~n |          0
+       ratio |        306    4.536601    .6125198        3.1        6.2
+
+. drop referencemonth
+
+. 
+. gen division=.
+(306 missing values generated)
+
+. replace division=1 if censusdivision=="New England"
+(34 real changes made)
+
+. replace division=2 if censusdivision=="Middle Atlantic"
+(34 real changes made)
+
+. replace division=3 if censusdivision=="East North Central"
+(34 real changes made)
+
+. replace division=4 if censusdivision=="West North Central"
+(34 real changes made)
+
+. replace division=5 if censusdivision=="South Atlantic"
+(34 real changes made)
+
+. replace division=6 if censusdivision=="East South Central"
+(34 real changes made)
+
+. replace division=7 if censusdivision=="West South Central"
+(34 real changes made)
+
+. replace division=8 if censusdivision=="Mountain"
+(34 real changes made)
+
+. replace division=9 if censusdivision=="Pacific"
+(34 real changes made)
+
+. 
+. drop censusdivision
+
+. 
+. sort year division
+
+. save Output/div_90_10_compensationratio.dta, replace
+file Output/div_90_10_compensationratio.dta saved
+
+. 
+. gr twoway connect ratio year if division==8 || connect ratio year if division==9, saving(Output/ratio_west, replace)
+(file Output/ratio_west.gph saved)
+
+. gr twoway connect ratio year if division==1 || connect ratio year if division==2 || connect ratio year if division==3 || connect ratio year if division==4 
+> || connect ratio year if division==5 || connect ratio year if division==6 || connect ratio year if division==7 || connect ratio year if division==8 || conn
+> ect ratio year if division==9, saving(Output/ratio_all, replace)
+(file Output/ratio_all.gph saved)
+
+. gr twoway connect ratio year if division==1 || connect ratio year if division==2 || connect ratio year if division==3 || connect ratio year if division==4,
+>  saving(Output/ratio_ne_midwest, replace)
+(file Output/ratio_ne_midwest.gph saved)
+
+. 
+. gen decade=.
+(306 missing values generated)
+
+. replace decade=1 if year>=1982 & year <=1990
+(81 real changes made)
+
+. replace decade=2 if year>=2007 & year <=2015
+(81 real changes made)
+
+. drop if decade==.
+(144 observations deleted)
+
+. collapse ratio, by(division decade)
+
+. reshape wide ratio, i(division) j(decade)
+(note: j = 1 2)
+
+Data                               long   ->   wide
+-----------------------------------------------------------------------------
+Number of obs.                       18   ->       9
+Number of variables                   3   ->       3
+j variable (2 values)            decade   ->   (dropped)
+xij variables:
+                                  ratio   ->   ratio1 ratio2
+-----------------------------------------------------------------------------
+
+. gen pc=(ratio2 - ratio1) / ratio1       
+
+. list
+
+     +--------------------------------------------+
+     | division     ratio1     ratio2          pc |
+     |--------------------------------------------|
+  1. |        1   3.955556   5.422222    .3707865 |
+  2. |        2   4.233333   5.566667    .3149607 |
+  3. |        3   4.511111   4.844444    .0738916 |
+  4. |        4   4.544445   4.877778    .0733496 |
+  5. |        5   3.688889   5.177778    .4036145 |
+     |--------------------------------------------|
+  6. |        6   4.155556   4.111111   -.0106952 |
+  7. |        7   4.233334   5.533333    .3070865 |
+  8. |        8   4.233333   4.833333    .1417324 |
+  9. |        9   4.122222   5.522222    .3396225 |
+     +--------------------------------------------+
+
+. 
+. log close
+      name:  <unnamed>
+       log:  H:\Other\Paper Codes for Uploading\BPEA\Firms90_10_GSS_Materials\Table_8\table8.log
+  log type:  text
+ closed on:   6 Mar 2020, 18:30:14
+-------------------------------------------------------------------------------------------------------------------------------------------------------------

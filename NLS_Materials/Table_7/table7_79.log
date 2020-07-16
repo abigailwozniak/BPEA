@@ -1,0 +1,673 @@
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  H:\Other\Paper Codes for Uploading\BPEA\NLS_Materials\Table_7\table7_79.log
+  log type:  text
+ opened on:   3 Mar 2020, 17:10:24
+
+. 
+. /*** Estimates of B&D contracting models ***/
+. /*** Revised version of do file by same name from Migration Decline analysis. Edited to remove use of or reference to geographic variables. ***/
+. 
+. *set mem 700m
+. 
+. cd ..\Data_Tables_5_6_7\.
+H:\Other\Paper Codes for Uploading\BPEA\NLS_Materials\Data_Tables_5_6_7
+
+. 
+. use US_Urate_Data\usurate16up.dta
+
+. drop if year > 1999
+(16 observations deleted)
+
+. replace year = year - 1900
+(40 real changes made)
+
+. summ year
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+        year |         40        79.5    11.69045         60         99
+
+. sort year
+
+. tempfile tempuryear
+
+. save `tempuryear', replace
+(note: file C:\Users\IRZJS01\AppData\Local\Temp\ST_efec_000001.tmp not found)
+file C:\Users\IRZJS01\AppData\Local\Temp\ST_efec_000001.tmp saved
+
+. clear
+
+. 
+. use US_Urate_Data\usurate16up.dta
+
+. drop if year > 1999
+(16 observations deleted)
+
+. replace styear = styear - 1900
+(40 real changes made)
+
+. summ styear
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+      styear |         40        79.5    11.69045         60         99
+
+. sort styear
+
+. tempfile tempurstyear
+
+. save `tempurstyear', replace
+(note: file C:\Users\IRZJS01\AppData\Local\Temp\ST_efec_000002.tmp not found)
+file C:\Users\IRZJS01\AppData\Local\Temp\ST_efec_000002.tmp saved
+
+. clear
+
+. 
+. use NLSY_Datasets\nlsy79tenure.dta
+
+. 
+. foreach x of numlist 80/94 {
+  2.   replace hgcrev`x'=. if hgcrev`x' < 0
+  3. }
+(546 real changes made, 546 to missing)
+(501 real changes made, 501 to missing)
+(603 real changes made, 603 to missing)
+(509 real changes made, 509 to missing)
+(639 real changes made, 639 to missing)
+(1,817 real changes made, 1,817 to missing)
+(2,069 real changes made, 2,069 to missing)
+(2,240 real changes made, 2,240 to missing)
+(2,262 real changes made, 2,262 to missing)
+(2,111 real changes made, 2,111 to missing)
+(2,287 real changes made, 2,287 to missing)
+(3,683 real changes made, 3,683 to missing)
+(3,677 real changes made, 3,677 to missing)
+(3,676 real changes made, 3,676 to missing)
+(3,800 real changes made, 3,800 to missing)
+
+. 
+. keep rcpshrp* rpce_cpshrp* tenureyr1* jobten* indten* occten* hgcrev* esr_key* black hisp female age79 edgrp4* wkswk_pcy* job1iscps* cpsind70* region* married* smsares* c
+> aseid custwt
+
+. reshape long rcpshrp rpce_cpshrp tenureyr1_ jobten indten occten hgcrev esr_key edgrp4_ wkswk_pcy job1iscps cpsind70_ region married smsares, i(caseid) j(year)
+(note: j = 79 80 81 82 83 84 85 86 87 88 89 90 91 92 93 94)
+(note: job1iscps79 not found)
+
+Data                               wide   ->   long
+-----------------------------------------------------------------------------
+Number of obs.                    12686   ->  202976
+Number of variables                 245   ->      22
+j variable (16 values)                    ->   year
+xij variables:
+      rcpshrp79 rcpshrp80 ... rcpshrp94   ->   rcpshrp
+rpce_cpshrp79 rpce_cpshrp80 ... rpce_cpshrp94->rpce_cpshrp
+tenureyr1_79 tenureyr1_80 ... tenureyr1_94->   tenureyr1_
+         jobten79 jobten80 ... jobten94   ->   jobten
+         indten79 indten80 ... indten94   ->   indten
+         occten79 occten80 ... occten94   ->   occten
+         hgcrev79 hgcrev80 ... hgcrev94   ->   hgcrev
+      esr_key79 esr_key80 ... esr_key94   ->   esr_key
+      edgrp4_79 edgrp4_80 ... edgrp4_94   ->   edgrp4_
+wkswk_pcy79 wkswk_pcy80 ... wkswk_pcy94   ->   wkswk_pcy
+job1iscps79 job1iscps80 ... job1iscps94   ->   job1iscps
+cpsind70_79 cpsind70_80 ... cpsind70_94   ->   cpsind70_
+         region79 region80 ... region94   ->   region
+      married79 married80 ... married94   ->   married
+      smsares79 smsares80 ... smsares94   ->   smsares
+-----------------------------------------------------------------------------
+
+. summ
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+      caseid |    202,976      6343.5    3662.142          1      12686
+        year |    202,976        86.5    4.609784         79         94
+       age79 |    202,976    17.89816    2.305508         14         22
+   cpsind70_ |    202,976    363.6078    355.0012         -5        999
+     esr_key |    202,976    1.306859    3.269844         -5          8
+-------------+---------------------------------------------------------
+      region |    202,976    1.400225    2.901146         -5          4
+   wkswk_pcy |    202,976     26.4165    23.95001         -5         52
+     smsares |    202,976    .8146037    .3886197          0          1
+      hgcrev |    172,556    12.25166    2.338165         -3         20
+      custwt |    202,976    264539.7    214412.7       6893    1058864
+-------------+---------------------------------------------------------
+       black |    202,976    .2501971    .4331275          0          1
+        hisp |    202,976    .1578118    .3645653          0          1
+      female |    202,976    .4952704    .4999789          0          1
+     edgrp4_ |    202,951    2.187045    .9318502          1          4
+     married |    172,892    .4098397    .4918054          0          1
+-------------+---------------------------------------------------------
+     rcpshrp |    118,305    6.156335    2.982969   1.143251   23.51552
+ rpce_cpshrp |    118,305    11.82444    5.818716   2.089943   46.58904
+  tenureyr1_ |    134,877    2.297302    2.816058   .0192322   20.11693
+   job1iscps |    190,290   -.5565768     2.45018         -5          1
+      jobten |     72,235     2.47745    2.916069   .0192322   19.55804
+-------------+---------------------------------------------------------
+      indten |     72,565    2.768902    3.084891   .0192322   20.32733
+      occten |     72,655    2.743858    3.067606   .0192322   21.46204
+
+. 
+. gen age = age79 + (year - 79)
+
+. gen age2 = age^2 
+
+. 
+. char edgrp4_[omit] 2
+
+. xi, prefix(_Y) i.year
+i.year            _Yyear_79-94        (naturally coded; _Yyear_79 omitted)
+
+. xi, prefix(_E) i.edgrp4_
+i.edgrp4_         _Eedgrp4__1-4       (naturally coded; _Eedgrp4__2 omitted)
+
+. 
+. *gen lnrhw=ln(rcpshrp)
+. gen lnrhw=ln(rpce_cpshrp)
+(84,671 missing values generated)
+
+. 
+. qui gen ind2=indten*indten
+
+. qui gen occ2=occten*occten
+
+. qui gen job2=jobten*jobten
+
+. 
+. 
+. *** Merge in current and initial unemployment rate
+. 
+. sort year
+
+. merge m:1 year using `tempuryear', keepusing(year usurate16up)
+(note: variable year was byte, now float to accommodate using data's values)
+
+    Result                           # of obs.
+    -----------------------------------------
+    not matched                            24
+        from master                         0  (_merge==1)
+        from using                         24  (_merge==2)
+
+    matched                           202,976  (_merge==3)
+    -----------------------------------------
+
+. drop if _merge==2
+(24 observations deleted)
+
+. drop _merge
+
+. rename usurate16up ucurr
+
+. 
+. gen styear=round(year-tenureyr1_)
+(68,099 missing values generated)
+
+. summ styear
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+      styear |    134,877    84.16064    4.170017         70         94
+
+. sort styear
+
+. merge m:1 styear using `tempurstyear', keepusing(styear usurate16up)
+
+    Result                           # of obs.
+    -----------------------------------------
+    not matched                        68,114
+        from master                    68,099  (_merge==1)
+        from using                         15  (_merge==2)
+
+    matched                           134,877  (_merge==3)
+    -----------------------------------------
+
+. drop if _merge==2
+(15 observations deleted)
+
+. drop _merge
+
+. rename usurate16up uinit
+
+. 
+. *** Calculate min unemp rate during job spell
+. 
+. gen ur70=4.9
+
+. gen ur71=5.9
+
+. gen ur72=5.6
+
+. gen ur73=4.9
+
+. gen ur74=5.6
+
+. gen ur75=8.5
+
+. gen ur76=7.7
+
+. gen ur77=7.1
+
+. gen ur78=6.1
+
+. gen ur79=5.8
+
+. gen ur80=7.1
+
+. gen ur81=7.6
+
+. gen ur82=9.7
+
+. gen ur83=9.6
+
+. gen ur84=7.5
+
+. gen ur85=7.2
+
+. gen ur86=7.0
+
+. gen ur87=6.2
+
+. gen ur88=5.5
+
+. gen ur89=5.3
+
+. gen ur90=5.6
+
+. gen ur91=6.8
+
+. gen ur92=7.5
+
+. gen ur93=6.9
+
+. gen ur94=6.1
+
+. 
+. 
+. forvalues j = 70/94 {
+  2.    replace ur`j'=. if `j' < styear
+  3.    replace ur`j'=. if `j' > year
+  4. }
+(202,969 real changes made, 202,969 to missing)
+(0 real changes made)
+(202,968 real changes made, 202,968 to missing)
+(0 real changes made)
+(202,965 real changes made, 202,965 to missing)
+(0 real changes made)
+(202,953 real changes made, 202,953 to missing)
+(0 real changes made)
+(202,881 real changes made, 202,881 to missing)
+(0 real changes made)
+(202,805 real changes made, 202,805 to missing)
+(0 real changes made)
+(202,604 real changes made, 202,604 to missing)
+(0 real changes made)
+(201,492 real changes made, 201,492 to missing)
+(0 real changes made)
+(193,679 real changes made, 193,679 to missing)
+(0 real changes made)
+(183,941 real changes made, 183,941 to missing)
+(0 real changes made)
+(171,683 real changes made, 171,683 to missing)
+(5,119 real changes made, 5,119 to missing)
+(159,501 real changes made, 159,501 to missing)
+(13,594 real changes made, 13,594 to missing)
+(148,619 real changes made, 148,619 to missing)
+(22,724 real changes made, 22,724 to missing)
+(138,166 real changes made, 138,166 to missing)
+(32,121 real changes made, 32,121 to missing)
+(127,661 real changes made, 127,661 to missing)
+(41,568 real changes made, 41,568 to missing)
+(117,647 real changes made, 117,647 to missing)
+(51,129 real changes made, 51,129 to missing)
+(108,586 real changes made, 108,586 to missing)
+(60,142 real changes made, 60,142 to missing)
+(99,977 real changes made, 99,977 to missing)
+(69,062 real changes made, 69,062 to missing)
+(92,104 real changes made, 92,104 to missing)
+(77,955 real changes made, 77,955 to missing)
+(85,186 real changes made, 85,186 to missing)
+(86,965 real changes made, 86,965 to missing)
+(79,487 real changes made, 79,487 to missing)
+(95,954 real changes made, 95,954 to missing)
+(75,339 real changes made, 75,339 to missing)
+(104,825 real changes made, 104,825 to missing)
+(71,837 real changes made, 71,837 to missing)
+(112,379 real changes made, 112,379 to missing)
+(69,271 real changes made, 69,271 to missing)
+(119,937 real changes made, 119,937 to missing)
+(68,099 real changes made, 68,099 to missing)
+(127,408 real changes made, 127,408 to missing)
+
+. 
+. gen ulyr=.
+(202,976 missing values generated)
+
+. forvalues j = 79/94 {
+  2.    local k = `j' - 1
+  3.    replace ulyr = ur`k' if year==`j'
+  4. }
+(2,876 real changes made)
+(4,077 real changes made)
+(5,067 real changes made)
+(5,619 real changes made)
+(6,113 real changes made)
+(6,274 real changes made)
+(6,169 real changes made)
+(6,416 real changes made)
+(6,727 real changes made)
+(6,791 real changes made)
+(7,019 real changes made)
+(7,064 real changes made)
+(6,264 real changes made)
+(6,276 real changes made)
+(6,332 real changes made)
+(6,297 real changes made)
+
+. summ ulyr
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+        ulyr |     95,381     6.98033    1.269595        5.3        9.7
+
+. 
+. egen umin=rmin(ur70-ur94)
+(68099 missing values generated)
+
+. summ umin if styear==year
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+        umin |     39,496    7.241581    1.335041        5.3        9.7
+
+. *replace umin=ulyr if styear==year
+. summ umin
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+        umin |    134,877    6.507731    1.202671        4.9        9.7
+
+. drop ur*
+
+. 
+. gen potexp = age - hgcrev - 6 if hgcrev~=. & hgcrev >= 0
+(30,427 missing values generated)
+
+. summ hgcrev potexp if hgcrev < 0
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+      hgcrev |          7          -3           0         -3         -3
+      potexp |          0
+
+. summ hgcrev potexp if potexp < 0
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+      hgcrev |        802    13.73192     2.26887          9         20
+      potexp |        802   -1.063591    .3272037         -5         -1
+
+. 
+. * There are a good number of pot exp < 0 - drop these for now
+. gen potexpb=potexp
+(30,427 missing values generated)
+
+. replace potexp=. if potexp < 0
+(802 real changes made, 802 to missing)
+
+. 
+. gen potexp2 = potexp^2
+(31,229 missing values generated)
+
+. gen potexpb2=potexpb^2
+(30,427 missing values generated)
+
+. 
+. *** Create samples to match those in NLS analysis
+. 
+. gen cond=(rcpshrp~=. & tenureyr1_~=. & hgcrev~=. & age~=. & black~=. & hisp~=. & female~=. & jobten~=. & indten~=. & occten~=.)
+
+. 
+. *drop if female==1
+. *bysort year: tab1 job1iscps
+. drop if job1iscps==0
+(8,794 observations deleted)
+
+. 
+. gen sample1=0
+
+. replace sample1=1 if (age>=22 & age<=33) & cond==1
+(42,165 real changes made)
+
+. gen sample2=0
+
+. replace sample2=1 if (age>=22 & age<=33) & cond==1 & wkswk_pcy >= 26
+(38,038 real changes made)
+
+. gen sample3=0
+
+. replace sample3=1 if (age>=22 & age<=37) & cond==1 & wkswk_pcy >= 26
+(40,351 real changes made)
+
+. 
+. summ sample*
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+     sample1 |    194,182    .2171417    .4123009          0          1
+     sample2 |    194,182    .1958884     .396884          0          1
+     sample3 |    194,182    .2077999    .4057338          0          1
+
+. *drop if sample2==0
+. 
+. tab1 year if sample2==1
+
+-> tabulation of year if sample2==1 
+
+       year |      Freq.     Percent        Cum.
+------------+-----------------------------------
+         79 |        135        0.35        0.35
+         80 |        822        2.16        2.52
+         81 |      1,425        3.75        6.26
+         82 |      2,054        5.40       11.66
+         83 |      2,461        6.47       18.13
+         84 |      2,861        7.52       25.65
+         85 |      2,900        7.62       33.28
+         86 |      3,261        8.57       41.85
+         87 |      3,506        9.22       51.07
+         88 |      3,463        9.10       60.17
+         89 |      3,387        8.90       69.08
+         90 |      3,288        8.64       77.72
+         91 |      2,737        7.20       84.92
+         92 |      2,279        5.99       90.91
+         93 |      1,942        5.11       96.01
+         94 |      1,517        3.99      100.00
+------------+-----------------------------------
+      Total |     38,038      100.00
+
+. 
+. *** Basic B&D specification, from Grant 2003
+. * log real hourly wage on indiv FE, pot exp + square, tenure + square, region dummies, 12 ind dummies, union status (omit), marital status, residence in SMSA
+. 
+. * try age and age2 instead of pot exp + square
+. 
+. summ cpsind70_
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+   cpsind70_ |    194,182    378.1072     354.156         -5        999
+
+. gen indgrp=.
+(194,182 missing values generated)
+
+. replace indgrp=1 if 0<=cpsind70_ & cpsind70_<=28
+(3,923 real changes made)
+
+. replace indgrp=2 if 47<=cpsind70_ & cpsind70_<=57
+(994 real changes made)
+
+. replace indgrp=3 if 67<=cpsind70_ & cpsind70_<=77
+(8,503 real changes made)
+
+. replace indgrp=4 if 107<=cpsind70_ & cpsind70_<=398
+(23,564 real changes made)
+
+. replace indgrp=5 if 407<=cpsind70_ & cpsind70_<=479
+(6,749 real changes made)
+
+. replace indgrp=6 if 507<=cpsind70_ & cpsind70_<=698
+(30,144 real changes made)
+
+. replace indgrp=7 if 707<=cpsind70_ & cpsind70_<=718
+(7,266 real changes made)
+
+. replace indgrp=8 if 727<=cpsind70_ & cpsind70_<=759
+(9,204 real changes made)
+
+. replace indgrp=9 if 769<=cpsind70_ & cpsind70_<=798
+(6,952 real changes made)
+
+. replace indgrp=10 if 807<=cpsind70_ & cpsind70_<=809
+(2,176 real changes made)
+
+. replace indgrp=11 if 828<=cpsind70_ & cpsind70_<=897
+(23,243 real changes made)
+
+. replace indgrp=12 if 907<=cpsind70_ & cpsind70_<=937
+(6,143 real changes made)
+
+. 
+. xi, pre(_I) i.indgrp
+i.indgrp          _Iindgrp_1-12       (naturally coded; _Iindgrp_1 omitted)
+
+. xi, pre(_R) i.region
+i.region          _Rregion_1-7        (_Rregion_1 for region==-5 omitted)
+
+. xi, pre(_Y) i.year
+i.year            _Yyear_79-94        (naturally coded; _Yyear_79 omitted)
+
+. 
+. xtset caseid year
+       panel variable:  caseid (unbalanced)
+        time variable:  year, 79 to 94, but with gaps
+                delta:  1 unit
+
+. 
+. summ black hisp
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+       black |    194,182    .2483392    .4320507          0          1
+        hisp |    194,182    .1575841    .3643515          0          1
+
+. 
+. gen trend=year
+
+. gen trend2=trend^2
+
+. 
+. cd ..\Table_7\.
+H:\Other\Paper Codes for Uploading\BPEA\NLS_Materials\Table_7
+
+. 
+. xtreg lnrhw ucurr uinit umin age age2 jobten job2 trend trend2 if female==0 & sample2==1 [w=custwt], fe cluster(caseid)
+(analytic weights assumed)
+note: trend omitted because of collinearity
+
+Fixed-effects (within) regression               Number of obs     =     19,628
+Group variable: caseid                          Number of groups  =      2,962
+
+R-sq:                                           Obs per group:
+     within  = 0.2011                                         min =          1
+     between = 0.0303                                         avg =        6.6
+     overall = 0.0602                                         max =         12
+
+                                                F(8,2961)         =     135.36
+corr(u_i, Xb)  = -0.1872                        Prob > F          =     0.0000
+
+                             (Std. Err. adjusted for 2,962 clusters in caseid)
+------------------------------------------------------------------------------
+             |               Robust
+       lnrhw |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+       ucurr |   .0028183   .0032741     0.86   0.389    -.0036015     .009238
+       uinit |  -.0000638    .005445    -0.01   0.991    -.0107402    .0106126
+        umin |  -.0311759   .0072717    -4.29   0.000     -.045434   -.0169177
+         age |   .0955796   .0465304     2.05   0.040     .0043444    .1868148
+        age2 |   -.002117   .0003913    -5.41   0.000    -.0028842   -.0013497
+      jobten |   .0323844    .003844     8.42   0.000     .0248473    .0399215
+        job2 |  -.0021904   .0002583    -8.48   0.000     -.002697   -.0016839
+       trend |          0  (omitted)
+      trend2 |    .000286   .0003102     0.92   0.356    -.0003221    .0008942
+       _cons |  -.4847067   1.097159    -0.44   0.659    -2.635978    1.666564
+-------------+----------------------------------------------------------------
+     sigma_u |  .37285655
+     sigma_e |  .25834027
+         rho |  .67564568   (fraction of variance due to u_i)
+------------------------------------------------------------------------------
+
+. *outreg using bd1979.doc, se keep(ucurr uinit umin) replace
+. outreg using Output\bd1979.doc, se keep(ucurr uinit umin) replace
+
+                                                                            --------------------
+                                                                                       lnrhw   
+                                                                            --------------------
+                                                                             ucurr     0.003   
+                                                                                      (0.003)  
+                                                                             uinit    -0.000   
+                                                                                      (0.005)  
+                                                                             umin     -0.031   
+                                                                                     (0.007)** 
+                                                                             R2        0.20    
+                                                                             N        19,628   
+                                                                            --------------------
+                                                                            * p<0.05; ** p<0.01
+
+
+. qui xtreg lnrhw ucurr uinit umin age age2 jobten job2 trend trend2 if female==1 & sample2==1 [w=custwt], fe cluster(caseid)
+
+. *outreg using bd1979.doc, se keep(ucurr uinit umin) merge
+. outreg using Output\bd1979.doc, se keep(ucurr uinit umin) merge
+
+                                                                      -------------------------------
+                                                                                 lnrhw      lnrhw   
+                                                                      -------------------------------
+                                                                       ucurr     0.003     -0.003   
+                                                                                (0.003)    (0.003)  
+                                                                       uinit    -0.000      0.000   
+                                                                                (0.005)    (0.006)  
+                                                                       umin     -0.031     -0.029   
+                                                                               (0.007)**  (0.007)** 
+                                                                       R2        0.20       0.22    
+                                                                       N        19,628     18,410   
+                                                                      -------------------------------
+                                                                            * p<0.05; ** p<0.01
+
+
+. qui xtreg lnrhw ucurr uinit umin age age2 jobten job2 trend trend2 if sample2==1 [w=custwt], fe cluster(caseid)
+
+. *outreg using bd1979.doc, se keep(ucurr uinit umin) merge
+. outreg using Output\bd1979.doc, se keep(ucurr uinit umin) merge
+
+                                                                 ------------------------------------------
+                                                                            lnrhw      lnrhw      lnrhw   
+                                                                 ------------------------------------------
+                                                                  ucurr     0.003     -0.003      0.000   
+                                                                           (0.003)    (0.003)    (0.002)  
+                                                                  uinit    -0.000      0.000      0.000   
+                                                                           (0.005)    (0.006)    (0.004)  
+                                                                  umin     -0.031     -0.029     -0.030   
+                                                                          (0.007)**  (0.007)**  (0.005)** 
+                                                                  R2        0.20       0.22       0.21    
+                                                                  N        19,628     18,410     38,038   
+                                                                 ------------------------------------------
+                                                                            * p<0.05; ** p<0.01
+
+
+. 
+. log close
+      name:  <unnamed>
+       log:  H:\Other\Paper Codes for Uploading\BPEA\NLS_Materials\Table_7\table7_79.log
+  log type:  text
+ closed on:   3 Mar 2020, 17:10:29
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------

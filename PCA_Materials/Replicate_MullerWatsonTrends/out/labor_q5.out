@@ -1,0 +1,159 @@
+ Date and Time: 17-Jan-2020 14:55:32
+   Number of Cosine Transformations    5
+   Series name: eu
+      First obs = 1967.25
+      Last obs = 2015.75
+      Number of Obs  195
+      Number of Years 48.8
+       Cutoff periodicity (in years) = 19.5
+
+      Sample Mean =   0.01
+      Sample Std. Dev. =   0.00
+      LR SD (Low-Freq I(0)) =   0.01
+
+   Series name: ue
+      First obs = 1967.25
+      Last obs = 2015.75
+      Number of Obs  195
+      Number of Years 48.8
+       Cutoff periodicity (in years) = 19.5
+
+      Sample Mean =   0.26
+      Sample Std. Dev. =   0.04
+      LR SD (Low-Freq I(0)) =   0.21
+
+   Series name: en
+      First obs = 1967.25
+      Last obs = 2015.75
+      Number of Obs  195
+      Number of Years 48.8
+       Cutoff periodicity (in years) = 19.5
+
+      Sample Mean =   0.03
+      Sample Std. Dev. =   0.00
+      LR SD (Low-Freq I(0)) =   0.02
+
+   Series name: ne
+      First obs = 1967.25
+      Last obs = 2015.75
+      Number of Obs  195
+      Number of Years 48.8
+       Cutoff periodicity (in years) = 19.5
+
+      Sample Mean =   0.05
+      Sample Std. Dev. =   0.00
+      LR SD (Low-Freq I(0)) =   0.01
+
+   Series name: factor
+      First obs = 1967.25
+      Last obs = 2015.75
+      Number of Obs  195
+      Number of Years 48.8
+       Cutoff periodicity (in years) = 19.5
+
+      Sample Mean =  -0.00
+      Sample Std. Dev. =   0.92
+      LR SD (Low-Freq I(0)) =   5.35
+
+   Sample Correlations:
+      I(0) weighted (eu & ue):  -0.45
+      I(0) weighted (eu & en):  -0.20
+      I(0) weighted (eu & ne):  -0.49
+      I(0) weighted (eu & factor):   0.19
+      I(0) weighted (ue & en):   0.55
+      I(0) weighted (ue & ne):   0.78
+      I(0) weighted (ue & factor):   0.25
+      I(0) weighted (en & ne):   0.15
+      I(0) weighted (en & factor):   0.90
+      I(0) weighted (ne & factor):  -0.23
+
+   Regression of ue onto eu:
+      |BetaHat                :  -8.84 ( 8.79)
+      |tstat for BetaHat      :  -1.01
+      |90 Percent CI for Beta : -27.58 to   9.90
+      |SER                    :   0.01 
+      |R^2                    :   0.20 
+
+   Regression of en onto eu:
+      |BetaHat                :  -0.46 ( 1.13)
+      |tstat for BetaHat      :  -0.41
+      |90 Percent CI for Beta :  -2.86 to   1.93
+      |SER                    :   0.00 
+      |R^2                    :   0.04 
+
+   Regression of ne onto eu:
+      |BetaHat                :  -0.68 ( 0.59)
+      |tstat for BetaHat      :  -1.14
+      |90 Percent CI for Beta :  -1.94 to   0.59
+      |SER                    :   0.00 
+      |R^2                    :   0.24 
+
+   Regression of factor onto eu:
+      |BetaHat                :  95.49 (249.67)
+      |tstat for BetaHat      :   0.38
+      |90 Percent CI for Beta : -436.77 to 627.76
+      |SER                    :   0.42 
+      |R^2                    :   0.04 
+
+   Regression of en onto ue:
+      |BetaHat                :   0.06 ( 0.05)
+      |tstat for BetaHat      :   1.31
+      |90 Percent CI for Beta :  -0.04 to   0.17
+      |SER                    :   0.00 
+      |R^2                    :   0.30 
+
+   Regression of ne onto ue:
+      |BetaHat                :   0.05 ( 0.02)
+      |tstat for BetaHat      :   2.50
+      |90 Percent CI for Beta :   0.01 to   0.10
+      |SER                    :   0.00 
+      |R^2                    :   0.61 
+
+   Regression of factor onto ue:
+      |BetaHat                :   6.38 (12.52)
+      |tstat for BetaHat      :   0.51
+      |90 Percent CI for Beta : -20.31 to  33.07
+      |SER                    :   0.42 
+      |R^2                    :   0.06 
+
+   Regression of ne onto en:
+      |BetaHat                :   0.09 ( 0.29)
+      |tstat for BetaHat      :   0.29
+      |90 Percent CI for Beta :  -0.54 to   0.71
+      |SER                    :   0.00 
+      |R^2                    :   0.02 
+
+   Regression of factor onto en:
+      |BetaHat                : 199.70 (47.60)
+      |tstat for BetaHat      :   4.20
+      |90 Percent CI for Beta :  98.22 to 301.18
+      |SER                    :   0.18 
+      |R^2                    :   0.81 
+
+   Regression of factor onto ne:
+      |BetaHat                : -83.80 (181.06)
+      |tstat for BetaHat      :  -0.46
+      |90 Percent CI for Beta : -469.78 to 302.19
+      |SER                    :   0.42 
+      |R^2                    :   0.05 
+
+       90 Percent CI for (eu,ue) correlation:  -0.84 to   0.36
+       90 Percent CI for (eu,ue) R^2        :   0.00 to   0.71
+       90 Percent CI for (eu,en) correlation:  -0.76 to   0.55
+       90 Percent CI for (eu,en) R^2        :   0.00 to   0.57
+       90 Percent CI for (eu,ne) correlation:  -0.86 to   0.32
+       90 Percent CI for (eu,ne) R^2        :   0.00 to   0.74
+       90 Percent CI for (eu,factor) correlation:  -0.56 to   0.75
+       90 Percent CI for (eu,factor) R^2        :   0.00 to   0.56
+       90 Percent CI for (ue,en) correlation:  -0.26 to   0.88
+       90 Percent CI for (ue,en) R^2        :   0.00 to   0.77
+       90 Percent CI for (ue,ne) correlation:   0.11 to   0.94
+       90 Percent CI for (ue,ne) R^2        :   0.01 to   0.88
+       90 Percent CI for (ue,factor) correlation:  -0.52 to   0.77
+       90 Percent CI for (ue,factor) R^2        :   0.00 to   0.60
+       90 Percent CI for (en,ne) correlation:  -0.59 to   0.73
+       90 Percent CI for (en,ne) R^2        :   0.00 to   0.54
+       90 Percent CI for (en,factor) correlation:   0.47 to   0.98
+       90 Percent CI for (en,factor) R^2        :   0.22 to   0.95
+       90 Percent CI for (ne,factor) correlation:  -0.76 to   0.54
+       90 Percent CI for (ne,factor) R^2        :   0.00 to   0.58

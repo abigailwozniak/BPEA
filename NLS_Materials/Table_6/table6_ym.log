@@ -1,0 +1,245 @@
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  H:\Other\Paper Codes for Uploading\BPEA\NLS_Materials\Table_6\table6_ym.log
+  log type:  text
+ opened on:   3 Mar 2020, 17:05:06
+
+. 
+. *** Descriptive statistics for NLSY-YM samples
+. 
+. cd ..\Data_Tables_5_6_7\.
+H:\Other\Paper Codes for Uploading\BPEA\NLS_Materials\Data_Tables_5_6_7
+
+. 
+. use NLSY_Datasets\nlsym_tenure.dta
+
+. 
+. cd ..\Table_6\.
+H:\Other\Paper Codes for Uploading\BPEA\NLS_Materials\Table_6
+
+. 
+. keep rpce_hrp* jobten* indten* occten* wkswk_pcy* hgc* black female age* edgrp4* ic* oc* jc* caseid custwt
+
+. reshape long rpce_hrp jobten indten occten wkswk_pcy hgc age edgrp4_ ic oc jc, i(caseid) j(year)
+(note: j = 66 67 68 69 70 71 73 75 76 78 80 81)
+
+Data                               wide   ->   long
+-----------------------------------------------------------------------------
+Number of obs.                     5225   ->   62700
+Number of variables                 160   ->      40
+j variable (12 values)                    ->   year
+xij variables:
+   rpce_hrp66 rpce_hrp67 ... rpce_hrp81   ->   rpce_hrp
+         jobten66 jobten67 ... jobten81   ->   jobten
+         indten66 indten67 ... indten81   ->   indten
+         occten66 occten67 ... occten81   ->   occten
+wkswk_pcy66 wkswk_pcy67 ... wkswk_pcy81   ->   wkswk_pcy
+                  hgc66 hgc67 ... hgc81   ->   hgc
+                  age66 age67 ... age81   ->   age
+      edgrp4_66 edgrp4_67 ... edgrp4_81   ->   edgrp4_
+                     ic66 ic67 ... ic81   ->   ic
+                     oc66 oc67 ... oc81   ->   oc
+                     jc66 jc67 ... jc81   ->   jc
+-----------------------------------------------------------------------------
+
+. *summ
+. 
+. gen lnrhw=ln(rpce_hrp)
+(25,046 missing values generated)
+
+. 
+. *** Create samples 
+. 
+. gen cond=(rpce_hrp~=. & edgrp4_~=. & age~=. & black~=. & jobten~=. & indten~=. & occten~=. & wkswk_pcy > 0)
+
+. 
+. gen sample1=0
+
+. replace sample1=1 if (age>=22 & age<=33) & cond==1
+(11,892 real changes made)
+
+. gen sample2=0
+
+. replace sample2=1 if (age>=22 & age<=33) & cond==1 & wkswk_pcy >= 26
+(11,466 real changes made)
+
+. gen sample3=0
+
+. replace sample3=1 if (age>=22 & age<=37) & cond==1 & wkswk_pcy >= 26
+(12,721 real changes made)
+
+. summ sample*
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+     sample1 |     62,700    .1896651    .3920391          0          1
+     sample2 |     62,700    .1828708    .3865637          0          1
+     sample3 |     62,700    .2028868    .4021521          0          1
+
+. 
+. drop if sample2==0 
+(51,234 observations deleted)
+
+. tab1 year
+
+-> tabulation of year  
+
+       year |      Freq.     Percent        Cum.
+------------+-----------------------------------
+         66 |        551        4.81        4.81
+         67 |        744        6.49       11.29
+         68 |        866        7.55       18.85
+         69 |        963        8.40       27.25
+         70 |      1,135        9.90       37.14
+         71 |      1,214       10.59       47.73
+         73 |      1,534       13.38       61.11
+         75 |      1,387       12.10       73.21
+         76 |      1,112        9.70       82.91
+         78 |        835        7.28       90.19
+         80 |        639        5.57       95.76
+         81 |        486        4.24      100.00
+------------+-----------------------------------
+      Total |     11,466      100.00
+
+. summ sample2 
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+     sample2 |     11,466           1           0          1          1
+
+. 
+. gen age2 = age^2 
+
+. qui gen ind2=indten*indten
+
+. qui gen occ2=occten*occten
+
+. qui gen job2=jobten*jobten
+
+. 
+. char edgrp4_[omit] 2
+
+. xi, prefix(_E) i.edgrp4_
+i.edgrp4_         _Eedgrp4__1-4       (naturally coded; _Eedgrp4__2 omitted)
+
+. xi, prefix(_Y) i.year
+i.year            _Yyear_66-81        (naturally coded; _Yyear_66 omitted)
+
+. 
+. tab1 year if sample2==1
+
+-> tabulation of year if sample2==1 
+
+       year |      Freq.     Percent        Cum.
+------------+-----------------------------------
+         66 |        551        4.81        4.81
+         67 |        744        6.49       11.29
+         68 |        866        7.55       18.85
+         69 |        963        8.40       27.25
+         70 |      1,135        9.90       37.14
+         71 |      1,214       10.59       47.73
+         73 |      1,534       13.38       61.11
+         75 |      1,387       12.10       73.21
+         76 |      1,112        9.70       82.91
+         78 |        835        7.28       90.19
+         80 |        639        5.57       95.76
+         81 |        486        4.24      100.00
+------------+-----------------------------------
+      Total |     11,466      100.00
+
+. 
+. * ind, occ, job with individual FEs - same as NBER spec (reported all years) but excludes locten and adds education group dummies
+. * Other changes were made to data - esp fixed default coding of missing wages as negatives
+. 
+. xtset caseid year
+       panel variable:  caseid (unbalanced)
+        time variable:  year, 66 to 81, but with gaps
+                delta:  1 unit
+
+. xtreg lnrhw jobten job2 indten ind2 occten occ2 age age2 _E* _Y* if sample2==1 [w=custwt], fe cluster(caseid)
+(analytic weights assumed)
+
+Fixed-effects (within) regression               Number of obs     =     11,466
+Group variable: caseid                          Number of groups  =      2,657
+
+R-sq:                                           Obs per group:
+     within  = 0.3356                                         min =          1
+     between = 0.0812                                         avg =        4.3
+     overall = 0.1175                                         max =          9
+
+                                                F(22,2656)        =      74.94
+corr(u_i, Xb)  = -0.3335                        Prob > F          =     0.0000
+
+                             (Std. Err. adjusted for 2,657 clusters in caseid)
+------------------------------------------------------------------------------
+             |               Robust
+       lnrhw |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+      jobten |  -.0138673   .0083479    -1.66   0.097    -.0302364    .0025018
+        job2 |   .0004523   .0006316     0.72   0.474    -.0007861    .0016907
+      indten |   .0223374   .0081253     2.75   0.006     .0064049    .0382699
+        ind2 |  -.0012034   .0006473    -1.86   0.063    -.0024727    .0000659
+      occten |   .0223852   .0080405     2.78   0.005     .0066189    .0381515
+        occ2 |  -.0014419   .0006395    -2.25   0.024    -.0026959   -.0001878
+         age |   .0548856   .0248145     2.21   0.027     .0062278    .1035433
+        age2 |  -.0014833   .0003346    -4.43   0.000    -.0021394   -.0008273
+ _Eedgrp4__1 |  -.0776281    .047819    -1.62   0.105    -.1713943    .0161382
+ _Eedgrp4__3 |   .0207357   .0447874     0.46   0.643     -.067086    .1085573
+ _Eedgrp4__4 |   .1253916   .0570641     2.20   0.028     .0134969    .2372863
+   _Yyear_67 |   .1055988   .0237643     4.44   0.000     .0590004    .1521972
+   _Yyear_68 |   .2061142   .0409232     5.04   0.000     .1258697    .2863588
+   _Yyear_69 |   .2913057   .0601584     4.84   0.000     .1733435    .4092678
+   _Yyear_70 |   .3430543   .0783001     4.38   0.000     .1895189    .4965897
+   _Yyear_71 |   .3919297   .0966872     4.05   0.000     .2023398    .5815196
+   _Yyear_73 |   .5418956   .1336028     4.06   0.000     .2799196    .8038717
+   _Yyear_75 |    .623504    .172533     3.61   0.000     .2851915    .9618166
+   _Yyear_76 |   .7137746   .1921962     3.71   0.000     .3369053    1.090644
+   _Yyear_78 |    .845347   .2324034     3.64   0.000     .3896371    1.301057
+   _Yyear_80 |   .9313722   .2713097     3.43   0.001     .3993724    1.463372
+   _Yyear_81 |    1.01244       .289     3.50   0.000     .4457522    1.579128
+       _cons |   1.811223    .433099     4.18   0.000     .9619778    2.660469
+-------------+----------------------------------------------------------------
+     sigma_u |  .37393832
+     sigma_e |  .20298229
+         rho |  .77240552   (fraction of variance due to u_i)
+------------------------------------------------------------------------------
+
+. 
+. * compute implied returns going from two to three years of tenure and standard errors 
+. nlcom 1*_b[indten] + 5*_b[ind2]
+
+       _nl_1:  1*_b[indten] + 5*_b[ind2]
+
+------------------------------------------------------------------------------
+       lnrhw |      Coef.   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+       _nl_1 |   .0163203   .0056756     2.88   0.004     .0051963    .0274443
+------------------------------------------------------------------------------
+
+. nlcom 1*_b[occten] + 5*_b[occ2]
+
+       _nl_1:  1*_b[occten] + 5*_b[occ2]
+
+------------------------------------------------------------------------------
+       lnrhw |      Coef.   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+       _nl_1 |   .0151758   .0055977     2.71   0.007     .0042046     .026147
+------------------------------------------------------------------------------
+
+. nlcom 1*_b[jobten] + 5*_b[job2]
+
+       _nl_1:  1*_b[jobten] + 5*_b[job2]
+
+------------------------------------------------------------------------------
+       lnrhw |      Coef.   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+       _nl_1 |  -.0116056   .0057581    -2.02   0.044    -.0228913   -.0003198
+------------------------------------------------------------------------------
+
+. 
+. log close
+      name:  <unnamed>
+       log:  H:\Other\Paper Codes for Uploading\BPEA\NLS_Materials\Table_6\table6_ym.log
+  log type:  text
+ closed on:   3 Mar 2020, 17:05:06
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------

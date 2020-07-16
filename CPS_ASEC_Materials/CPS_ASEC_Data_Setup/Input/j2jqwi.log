@@ -1,0 +1,21 @@
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  H:\Other\Paper Codes for Uploading\Brookings Paper - Copy\Raven\j2jqwi.log
+  log type:  text
+ opened on:  16 Jan 2020, 16:28:02
+
+. * downloaded from http://lehd.ces.census.gov/data/j2j_beta.html
+. insheet using j2jqwi.csv, clear
+(2 vars, 57 obs)
+
+. drop if year==2014
+(2 observations deleted)
+
+. collapse (mean) j2jsepr, by(year)
+
+. save j2jqwi, replace
+file j2jqwi.dta saved
+
+. 
+. 
+. quietly log close

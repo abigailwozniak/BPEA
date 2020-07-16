@@ -1,0 +1,307 @@
+Year,Reference month,Census Division,Ratio
+1982,March,New England,4.3
+1982,March,Middle Atlantic,3.8
+1982,March,East North Central,4.2
+1982,March,West North Central,4.2
+1982,March,South Atlantic,4
+1982,March,East South Central,4
+1982,March,West South Central,3.9
+1982,March,Mountain,3.6
+1982,March,Pacific,3.9
+1983,March,New England,4.5
+1983,March,Middle Atlantic,4.3
+1983,March,East North Central,4
+1983,March,West North Central,4.5
+1983,March,South Atlantic,3.6
+1983,March,East South Central,4.1
+1983,March,West South Central,4.1
+1983,March,Mountain,3.1
+1983,March,Pacific,3.7
+1984,March,New England,4.3
+1984,March,Middle Atlantic,4.5
+1984,March,East North Central,4.3
+1984,March,West North Central,4.6
+1984,March,South Atlantic,3.6
+1984,March,East South Central,4.1
+1984,March,West South Central,4.3
+1984,March,Mountain,3.5
+1984,March,Pacific,3.5
+1985,March,New England,3.9
+1985,March,Middle Atlantic,4.5
+1985,March,East North Central,4.6
+1985,March,West North Central,4.5
+1985,March,South Atlantic,3.3
+1985,March,East South Central,4
+1985,March,West South Central,4.5
+1985,March,Mountain,4.6
+1985,March,Pacific,4.4
+1986,March,New England,3.8
+1986,March,Middle Atlantic,4.3
+1986,March,East North Central,4.7
+1986,March,West North Central,4.3
+1986,March,South Atlantic,3.6
+1986,March,East South Central,3.7
+1986,March,West South Central,4.3
+1986,March,Mountain,4.7
+1986,March,Pacific,4.2
+1987,March,New England,3.6
+1987,March,Middle Atlantic,4.2
+1987,March,East North Central,4.5
+1987,March,West North Central,4.7
+1987,March,South Atlantic,3.8
+1987,March,East South Central,4.5
+1987,March,West South Central,4
+1987,March,Mountain,4.3
+1987,March,Pacific,4.3
+1988,March,New England,3.8
+1988,March,Middle Atlantic,4.5
+1988,March,East North Central,5
+1988,March,West North Central,4.7
+1988,March,South Atlantic,3.6
+1988,March,East South Central,4.2
+1988,March,West South Central,4
+1988,March,Mountain,4.4
+1988,March,Pacific,4.2
+1989,March,New England,3.5
+1989,March,Middle Atlantic,3.8
+1989,March,East North Central,4.8
+1989,March,West North Central,4.7
+1989,March,South Atlantic,3.9
+1989,March,East South Central,4.5
+1989,March,West South Central,4.6
+1989,March,Mountain,4.9
+1989,March,Pacific,4.4
+1990,March,New England,3.9
+1990,March,Middle Atlantic,4.2
+1990,March,East North Central,4.5
+1990,March,West North Central,4.7
+1990,March,South Atlantic,3.8
+1990,March,East South Central,4.3
+1990,March,West South Central,4.4
+1990,March,Mountain,5
+1990,March,Pacific,4.5
+1991,March,New England,3.2
+1991,March,Middle Atlantic,4
+1991,March,East North Central,4.8
+1991,March,West North Central,4.9
+1991,March,South Atlantic,3.8
+1991,March,East South Central,4.3
+1991,March,West South Central,4.4
+1991,March,Mountain,5.1
+1991,March,Pacific,4.5
+1992,March,New England,3.3
+1992,March,Middle Atlantic,4.2
+1992,March,East North Central,4.3
+1992,March,West North Central,4.5
+1992,March,South Atlantic,3.8
+1992,March,East South Central,4.2
+1992,March,West South Central,3.9
+1992,March,Mountain,4.6
+1992,March,Pacific,4.8
+1993,March,New England,3.5
+1993,March,Middle Atlantic,4.5
+1993,March,East North Central,4.6
+1993,March,West North Central,4.8
+1993,March,South Atlantic,3.8
+1993,March,East South Central,3.9
+1993,March,West South Central,3.9
+1993,March,Mountain,4.7
+1993,March,Pacific,4.9
+1994,March,New England,4.1
+1994,March,Middle Atlantic,4.5
+1994,March,East North Central,4.8
+1994,March,West North Central,5
+1994,March,South Atlantic,4
+1994,March,East South Central,4.3
+1994,March,West South Central,4.9
+1994,March,Mountain,4.8
+1994,March,Pacific,4.4
+1995,March,New England,3.7
+1995,March,Middle Atlantic,5.1
+1995,March,East North Central,4.8
+1995,March,West North Central,4.2
+1995,March,South Atlantic,4
+1995,March,East South Central,4.2
+1995,March,West South Central,4.8
+1995,March,Mountain,3.9
+1995,March,Pacific,4.5
+1996,March,New England,4.1
+1996,March,Middle Atlantic,5.4
+1996,March,East North Central,4.9
+1996,March,West North Central,4.4
+1996,March,South Atlantic,4.2
+1996,March,East South Central,4.1
+1996,March,West South Central,4.8
+1996,March,Mountain,4.3
+1996,March,Pacific,4.8
+1997,March,New England,4.4
+1997,March,Middle Atlantic,5.1
+1997,March,East North Central,4.8
+1997,March,West North Central,4.2
+1997,March,South Atlantic,4.1
+1997,March,East South Central,3.6
+1997,March,West South Central,4.4
+1997,March,Mountain,4.8
+1997,March,Pacific,4.5
+1998,March,New England,4.3
+1998,March,Middle Atlantic,5.2
+1998,March,East North Central,4.8
+1998,March,West North Central,4.3
+1998,March,South Atlantic,4
+1998,March,East South Central,3.3
+1998,March,West South Central,4.6
+1998,March,Mountain,4.4
+1998,March,Pacific,4.4
+1999,March,New England,3.9
+1999,March,Middle Atlantic,5.1
+1999,March,East North Central,4.7
+1999,March,West North Central,4.1
+1999,March,South Atlantic,4
+1999,March,East South Central,3.2
+1999,March,West South Central,4.6
+1999,March,Mountain,4.5
+1999,March,Pacific,4.6
+2000,March,New England,4.3
+2000,March,Middle Atlantic,5.5
+2000,March,East North Central,4.2
+2000,March,West North Central,4.3
+2000,March,South Atlantic,4
+2000,March,East South Central,3.6
+2000,March,West South Central,4.7
+2000,March,Mountain,3.8
+2000,March,Pacific,4.4
+2001,March,New England,4.5
+2001,March,Middle Atlantic,4.5
+2001,March,East North Central,4.3
+2001,March,West North Central,4
+2001,March,South Atlantic,4
+2001,March,East South Central,3.8
+2001,March,West South Central,4.8
+2001,March,Mountain,4.1
+2001,March,Pacific,4.7
+2002,March,New England,4.3
+2002,March,Middle Atlantic,4.8
+2002,March,East North Central,4.3
+2002,March,West North Central,3.9
+2002,March,South Atlantic,4
+2002,March,East South Central,4
+2002,March,West South Central,4.7
+2002,March,Mountain,4.2
+2002,March,Pacific,4.6
+2003,March,New England,4.5
+2003,March,Middle Atlantic,4.7
+2003,March,East North Central,4.4
+2003,March,West North Central,4
+2003,March,South Atlantic,4
+2003,March,East South Central,3.7
+2003,March,West South Central,4.8
+2003,March,Mountain,4.2
+2003,March,Pacific,4.4
+2004,March,New England,4.3
+2004,March,Middle Atlantic,5.2
+2004,March,East North Central,4.8
+2004,March,West North Central,4.8
+2004,March,South Atlantic,4.4
+2004,March,East South Central,3.5
+2004,March,West South Central,5.1
+2004,March,Mountain,4.2
+2004,March,Pacific,4.7
+2005,March,New England,4.7
+2005,March,Middle Atlantic,4.7
+2005,March,East North Central,5.4
+2005,March,West North Central,4.4
+2005,March,South Atlantic,4.5
+2005,March,East South Central,3.4
+2005,March,West South Central,5.4
+2005,March,Mountain,4.6
+2005,March,Pacific,4.9
+2006,March,New England,5.2
+2006,March,Middle Atlantic,5
+2006,March,East North Central,5.5
+2006,March,West North Central,4.3
+2006,March,South Atlantic,4.9
+2006,March,East South Central,3.3
+2006,March,West South Central,6
+2006,March,Mountain,4.6
+2006,March,Pacific,5.2
+2007,March,New England,5.4
+2007,March,Middle Atlantic,4.9
+2007,March,East North Central,5.2
+2007,March,West North Central,4.7
+2007,March,South Atlantic,5
+2007,March,East South Central,3.4
+2007,March,West South Central,5.8
+2007,March,Mountain,4.3
+2007,March,Pacific,5.3
+2008,March,New England,5.2
+2008,March,Middle Atlantic,4.9
+2008,March,East North Central,5.1
+2008,March,West North Central,4.6
+2008,March,South Atlantic,5
+2008,March,East South Central,3.3
+2008,March,West South Central,5.7
+2008,March,Mountain,4.3
+2008,March,Pacific,5.3
+2009,March,New England,5
+2009,March,Middle Atlantic,5
+2009,March,East North Central,4.7
+2009,March,West North Central,4.9
+2009,March,South Atlantic,5
+2009,March,East South Central,3.7
+2009,March,West South Central,6.1
+2009,March,Mountain,4.8
+2009,March,Pacific,5.4
+2010,March,New England,5.2
+2010,March,Middle Atlantic,5.2
+2010,March,East North Central,4.7
+2010,March,West North Central,4.6
+2010,March,South Atlantic,4.9
+2010,March,East South Central,4
+2010,March,West South Central,5.5
+2010,March,Mountain,4.8
+2010,March,Pacific,5.4
+2011,March,New England,5.3
+2011,March,Middle Atlantic,5.7
+2011,March,East North Central,4.9
+2011,March,West North Central,5
+2011,March,South Atlantic,5
+2011,March,East South Central,4.2
+2011,March,West South Central,5.4
+2011,March,Mountain,4.8
+2011,March,Pacific,5.6
+2012,March,New England,5.1
+2012,March,Middle Atlantic,6.1
+2012,March,East North Central,4.5
+2012,March,West North Central,5
+2012,March,South Atlantic,5.2
+2012,March,East South Central,4.8
+2012,March,West South Central,5.4
+2012,March,Mountain,5.1
+2012,March,Pacific,5.5
+2013,March,New England,5.9
+2013,March,Middle Atlantic,6.2
+2013,March,East North Central,4.7
+2013,March,West North Central,5
+2013,March,South Atlantic,5.4
+2013,March,East South Central,4.6
+2013,March,West South Central,5
+2013,March,Mountain,4.9
+2013,March,Pacific,5.5
+2014,March,New England,5.7
+2014,March,Middle Atlantic,6.1
+2014,March,East North Central,4.8
+2014,March,West North Central,5.2
+2014,March,South Atlantic,5.4
+2014,March,East South Central,4.6
+2014,March,West South Central,5.1
+2014,March,Mountain,5.6
+2014,March,Pacific,5.7
+2015,March,New England,6
+2015,March,Middle Atlantic,6
+2015,March,East North Central,5
+2015,March,West North Central,4.9
+2015,March,South Atlantic,5.7
+2015,March,East South Central,4.4
+2015,March,West South Central,5.8
+2015,March,Mountain,4.9
+2015,March,Pacific,6

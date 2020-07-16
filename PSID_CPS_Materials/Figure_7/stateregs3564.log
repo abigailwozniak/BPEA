@@ -1,0 +1,886 @@
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  H:\Other\Paper Codes for Uploading\BPEA\PSID_CPS_Materials\Figure_7\stateregs3564.log
+  log type:  text
+ opened on:   3 Mar 2020, 17:58:36
+
+. 
+. * flows from Unicon by age
+. use Input\state-age-level-data, clear
+
+. replace migstate = . if year==1984 | year<=1979
+(1,020 real changes made, 1,020 to missing)
+
+. keep if ageg==3
+(5,967 observations deleted)
+
+. keep year empchange migstate statefip en eu ue ne
+
+. rename statefip state
+
+. 
+. cd ..\CPS_Data_Setup\.
+H:\Other\Paper Codes for Uploading\BPEA\PSID_CPS_Materials\CPS_Data_Setup
+
+. 
+. *merge 1:1 state year using ipums3564
+. merge 1:1 state year using Output\ipums3564
+
+    Result                           # of obs.
+    -----------------------------------------
+    not matched                           620
+        from master                        38  (_merge==1)
+        from using                        582  (_merge==2)
+
+    matched                             1,951  (_merge==3)
+    -----------------------------------------
+
+. drop _merge
+
+. * extend Unicon data with ipums
+. sort state year
+
+. quietly for var smigrant empchangeipums: quietly by state: gen X1 = X[_n+1]
+
+. quietly by state: replace migstate = migstate[_n-1]*smigrant1/smigrant1[_n-1] if year>=2013
+
+. quietly by state: replace empchange = empchange[_n-1]*empchangeipums1/empchangeipums1[_n-1] if year>=2013
+
+. *merge 1:1 state year using cpscovariates
+. merge 1:1 state year using Output\cpscovariates
+
+    Result                           # of obs.
+    -----------------------------------------
+    not matched                            38
+        from master                        38  (_merge==1)
+        from using                          0  (_merge==2)
+
+    matched                             2,533  (_merge==3)
+    -----------------------------------------
+
+. drop empchangeipums* smigrant*
+
+. drop _merge
+
+. 
+. cd ..\Table_4_A6_Fig_6_10_12\.
+H:\Other\Paper Codes for Uploading\BPEA\PSID_CPS_Materials\Table_4_A6_Fig_6_10_12
+
+. 
+. *merge 1:1 state year using union
+. merge 1:1 state year using Output\union
+(note: variable state was byte, now float to accommodate using data's values)
+
+    Result                           # of obs.
+    -----------------------------------------
+    not matched                           467
+        from master                       193  (_merge==1)
+        from using                        274  (_merge==2)
+
+    matched                             2,378  (_merge==3)
+    -----------------------------------------
+
+. drop if _merge==2
+(274 observations deleted)
+
+. drop _merge
+
+. 
+. *merge 1:1 state year using stateur
+. merge 1:1 state year using Input\stateur
+
+    Result                           # of obs.
+    -----------------------------------------
+    not matched                           582
+        from master                       582  (_merge==1)
+        from using                          0  (_merge==2)
+
+    matched                             1,989  (_merge==3)
+    -----------------------------------------
+
+. drop _merge
+
+. 
+.    lab def fips 2 "AK"
+
+.    lab def fips 1 "AL", add
+
+.    lab def fips 05 "AR", add                       
+
+.    lab def fips 60 "AS", add             
+
+.    lab def fips 04 "AZ", add             
+
+.    lab def fips 06 "CA", add             
+
+.    lab def fips 08 "CO", add             
+
+.    lab def fips 09 "CT", add             
+
+.    lab def fips 11 "DC", add             
+
+.    lab def fips 10 "DE", add             
+
+.    lab def fips 12 "FL", add             
+
+.    lab def fips 13 "GA", add             
+
+.    lab def fips 66 "GU", add             
+
+.    lab def fips 15 "HI", add             
+
+.    lab def fips 19 "IA", add             
+
+.    lab def fips 16 "ID", add             
+
+.    lab def fips 17 "IL", add             
+
+.    lab def fips 18 "IN", add             
+
+.    lab def fips 20 "KS", add             
+
+.    lab def fips 21 "KY", add             
+
+.    lab def fips 22 "LA", add             
+
+.    lab def fips 25 "MA", add             
+
+.    lab def fips 24 "MD", add             
+
+.    lab def fips 23 "ME", add             
+
+.    lab def fips 26 "MI", add             
+
+.    lab def fips 27 "MN", add             
+
+.    lab def fips 29 "MO", add             
+
+.    lab def fips 28 "MS", add             
+
+.    lab def fips 30 "MT", add             
+
+.    lab def fips 37 "NC", add             
+
+.    lab def fips 38 "ND", add             
+
+.    lab def fips 31 "NE", add             
+
+.    lab def fips 33 "NH", add             
+
+.    lab def fips 34 "NJ", add             
+
+.    lab def fips 35 "NM", add             
+
+.    lab def fips 32 "NV", add             
+
+.    lab def fips 36 "NY", add             
+
+.    lab def fips 39 "OH", add             
+
+.    lab def fips 40 "OK", add             
+
+.    lab def fips 41 "OR", add             
+
+.    lab def fips 42 "PA", add             
+
+.    lab def fips 72 "PR", add             
+
+.    lab def fips 44 "RI", add             
+
+.    lab def fips 45 "SC", add             
+
+.    lab def fips 46 "SD", add             
+
+.    lab def fips 47 "TN", add             
+
+.    lab def fips 48 "TX", add             
+
+.    lab def fips 49 "UT", add             
+
+.    lab def fips 51 "VA", add             
+
+.    lab def fips 78 "VI", add             
+
+.    lab def fips 50 "VT", add             
+
+.    lab def fips 53 "WA", add             
+
+.    lab def fips 55 "WI", add             
+
+.    lab def fips 54 "WV", add             
+
+.    lab def fips 56 "WY", add          
+
+.    lab def fips 0  "US", add
+
+. lab val state fips
+
+. 
+. gen timet = 1 if year==1978
+(2,520 missing values generated)
+
+. sort state year
+
+. quietly by state: replace timet = timet[_n-1]+1 if year>=1979
+
+. gen timet2 = timet^2
+(633 missing values generated)
+
+. quietly for num 1/3: quietly by state: gen stateurX = stateur[_n-X]
+
+. quietly for var age2334  en eu ue ne empchange migstate owner age3544 union: gen Xtrend = .
+
+. 
+. foreach V of var age2334  age3544 en eu ue ne empchange migstate owner age3544 union {
+  2.     quietly for num 1/2 4/6 8/13 15/42 44/51 53/56: reg `V' stateur stateur1 timet if state==X \ replace `V'trend = _b[timet] if state==X
+  3. }
+
+. gen avgtrend = 1/6*(entrend+eutrend+uetrend+netrend+empchangetrend+migstatetrend)
+(102 missing values generated)
+
+. 
+. factor entrend eutrend uetrend netrend empchangetrend migstatetrend if year==2000
+(obs=51)
+
+Factor analysis/correlation                      Number of obs    =         51
+    Method: principal factors                    Retained factors =          3
+    Rotation: (unrotated)                        Number of params =         15
+
+    --------------------------------------------------------------------------
+         Factor  |   Eigenvalue   Difference        Proportion   Cumulative
+    -------------+------------------------------------------------------------
+        Factor1  |      1.70408      0.31199            0.5738       0.5738
+        Factor2  |      1.39209      1.06920            0.4687       1.0425
+        Factor3  |      0.32290      0.39819            0.1087       1.1512
+        Factor4  |     -0.07529      0.06281           -0.0253       1.1258
+        Factor5  |     -0.13810      0.09752           -0.0465       1.0793
+        Factor6  |     -0.23562            .           -0.0793       1.0000
+    --------------------------------------------------------------------------
+    LR test: independent vs. saturated:  chi2(15) =  118.68 Prob>chi2 = 0.0000
+
+Factor loadings (pattern matrix) and unique variances
+
+    -----------------------------------------------------------
+        Variable |  Factor1   Factor2   Factor3 |   Uniqueness 
+    -------------+------------------------------+--------------
+         entrend |   0.8090   -0.4104   -0.0007 |      0.1770  
+         eutrend |   0.0146    0.2435    0.3770 |      0.7983  
+         uetrend |   0.2110    0.3557    0.3639 |      0.6965  
+         netrend |   0.8846   -0.2406    0.0240 |      0.1591  
+    empchanget~d |   0.3195    0.7056   -0.1446 |      0.3791  
+    migstatetr~d |   0.3468    0.6943   -0.1638 |      0.3708  
+    -----------------------------------------------------------
+
+. predict f1ptrend if e(sample)
+(regression scoring assumed)
+
+Scoring coefficients (method = regression)
+
+    --------------------------------------------
+        Variable |  Factor1   Factor2   Factor3 
+    -------------+------------------------------
+         entrend |  0.34880  -0.34763  -0.07457 
+         eutrend |  0.02922   0.09048   0.30978 
+         uetrend |  0.04093   0.12971   0.34491 
+         netrend |  0.54257  -0.04776   0.10288 
+    empchanget~d |  0.15978   0.38491  -0.14608 
+    migstatetr~d |  0.14211   0.37856  -0.19898 
+    --------------------------------------------
+
+
+. mat f1pmat = r(scoef)
+
+. scalar f1psum = f1pmat[1,1]+f1pmat[2,1]+f1pmat[3,1]+f1pmat[4,1]+f1pmat[5,1]+f1pmat[6,1]
+
+. gen f1pmean = (f1pmat[1,1]*en+f1pmat[2,1]*eu+f1pmat[3,1]*ue+f1pmat[4,1]*ne+f1pmat[5,1]*empchange+f1pmat[6,1]*migstate)/f1psum
+(888 missing values generated)
+
+. gen f1ptrendmean = (f1pmat[1,1]*entrend+f1pmat[2,1]*eutrend+f1pmat[3,1]*uetrend+f1pmat[4,1]*netrend+f1pmat[5,1]*empchangetrend+f1pmat[6,1]*migstatetrend)/f1psum
+(102 missing values generated)
+
+. gen temp =  f1pmean if year==1980
+(2,520 missing values generated)
+
+. egen f1pmean80 = mean(temp), by(state)
+(102 missing values generated)
+
+. drop temp
+
+. gen relf1ptrend = f1ptrendmean/f1pmean80 if year==2000
+(2,520 missing values generated)
+
+. 
+. egen mpop = mean(pop), by(state)
+
+. replace mpop = round(mpop,1)
+(2,459 real changes made)
+
+. 
+. gen cendiv = 1 if state==9 | state==23 | state==25 | state==33 | state==44 | state==50
+(2,287 missing values generated)
+
+. replace cendiv = 2 if state==34 | state==36 | state==42
+(162 real changes made)
+
+. replace cendiv = 3 if state==17 | state==18 | state==26 | state==39 | state==55 
+(254 real changes made)
+
+. replace cendiv = 4 if state==19 | state==20 | state==27 | state==29 | state==31 | state==38 | state==46
+(324 real changes made)
+
+. replace cendiv = 5 if state==10 | state==11 | state==12 | state==13 | state==24 | state==37 | state==45 | state==51 | state==54
+(448 real changes made)
+
+. replace cendiv = 6 if state==1  | state==21 | state==28 | state==47
+(194 real changes made)
+
+. replace cendiv = 7 if state==5  | state==22 | state==40 | state==48
+(197 real changes made)
+
+. replace cendiv = 8 if state==4  | state==8  | state==16 | state==30  | state==32 | state==35  | state==49 | state==56
+(365 real changes made)
+
+. replace cendiv = 9 if state==2  | state==6  | state==15 | state==41 | state==53
+(241 real changes made)
+
+. lab def cendiv 1 "New England" 2 "Mid Atlantic" 3 "East North Central" 4 "West North Centeral" 5 "South Atlantic" 6 "East South Central" 7 "West Sounth Central" 8 "Mountain" 9 "Pacific"
+
+. lab val cendiv cendiv
+
+. quietly tab cendiv, gen(cendiv)
+
+. 
+. cd ..\Figure_7\.
+H:\Other\Paper Codes for Uploading\BPEA\PSID_CPS_Materials\Figure_7
+
+. 
+. gen decade = 1 if year>=1977 & year<=1979
+(2,418 missing values generated)
+
+. replace decade = 2 if year>=1980 & year<=1989
+(510 real changes made)
+
+. replace decade = 3 if year>=1990 & year<=1999
+(510 real changes made)
+
+. replace decade = 4 if year>=2000 & year<=2014
+(765 real changes made)
+
+. quietly for var en eu ue ne empchange migstate age* lths hsdeg somecol collplus married single female mfg serv ag manprof techocc servocc prodocc military inschool owner adminocc opocc: egen mX = mean(X), by(state decade)
+
+. quietly for var age* lths hsdeg somecol collplus married single female mfg serv ag manprof techocc servocc prodocc military inschool owner adminocc opocc : gen temp = mX if year==1989 \ egen mX80s = mean(temp), by(state) \ drop temp
+
+. quietly for var age* lths hsdeg somecol collplus married single female mfg serv ag manprof techocc servocc prodocc military inschool owner adminocc opocc : gen temp = mX if year>=1977 & year<=1979 \ egen mX70s = mean(temp), by(state) \ drop temp
+
+. lab var f1ptrend "1st Factor of Fluidity Trends, Age 35-64"
+
+. lab var age2334trend "Trend in Age 23-34"
+
+. * graph of trend in fluidity and trend in youth share
+. gr7 relf1ptrend age2334trend if year==2000, s([state]) ylab(-0.015(.003).009) xlab(-0.003(.0005).0005)   l1("Trend in Labor Market Fluidity Age 35-64")  saving(Output\agecorr, replace)
+
+. outfile state relf1ptrend age2334trend if year==2000 using Output\agefig.csv, comma wide replace nolab
+
+. 
+. reg f1ptrend age2334trend if year==2000
+
+      Source |       SS           df       MS      Number of obs   =        51
+-------------+----------------------------------   F(1, 49)        =      0.06
+       Model |  .056255467         1  .056255467   Prob > F        =    0.8023
+    Residual |  43.5199115        49   .88816146   R-squared       =    0.0013
+-------------+----------------------------------   Adj R-squared   =   -0.0191
+       Total |   43.576167        50   .87152334   Root MSE        =    .94242
+
+------------------------------------------------------------------------------
+    f1ptrend |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+age2334trend |  -49.00397   194.7129    -0.25   0.802    -440.2943    342.2863
+       _cons |  -.0803409    .345429    -0.23   0.817    -.7745065    .6138247
+------------------------------------------------------------------------------
+
+. quietly for var f1ptrend age2334trend avgtrend netrend entrend uetrend eutrend empchangetrend migstatetrend uniontrend age3544trend madminocc70s mopocc70s: sum X if year==2000 \ gen Xd = (X-r(mean))/r(sd)
+
+. reg f1ptrendd age2334trendd if year==2000
+
+      Source |       SS           df       MS      Number of obs   =        51
+-------------+----------------------------------   F(1, 49)        =      0.06
+       Model |  .064548415         1  .064548415   Prob > F        =    0.8023
+    Residual |  49.9354505        49  1.01909083   R-squared       =    0.0013
+-------------+----------------------------------   Adj R-squared   =   -0.0191
+       Total |   49.999999        50  .999999979   Root MSE        =    1.0095
+
+-------------------------------------------------------------------------------
+    f1ptrendd |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+--------------+----------------------------------------------------------------
+age2334trendd |    -.03593   .1427649    -0.25   0.802    -.3228269    .2509668
+        _cons |   4.46e-09   .1413583     0.00   1.000    -.2840702    .2840702
+-------------------------------------------------------------------------------
+
+. reg f1ptrendd  age2334trendd age3544trendd madminocc70sd mopocc70sd uniontrendd  cendiv2 cendiv8 cendiv9 if year==2000
+
+      Source |       SS           df       MS      Number of obs   =        51
+-------------+----------------------------------   F(8, 42)        =      8.55
+       Model |  30.9843097         8  3.87303871   Prob > F        =    0.0000
+    Residual |  19.0156892        42  .452754506   R-squared       =    0.6197
+-------------+----------------------------------   Adj R-squared   =    0.5472
+       Total |   49.999999        50  .999999979   Root MSE        =    .67287
+
+-------------------------------------------------------------------------------
+    f1ptrendd |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+--------------+----------------------------------------------------------------
+age2334trendd |  -.0957832   .1031818    -0.93   0.359    -.3040125    .1124461
+age3544trendd |   .4092651   .1139777     3.59   0.001     .1792488    .6392814
+madminocc70sd |   .4577417   .1084939     4.22   0.000     .2387921    .6766914
+   mopocc70sd |   .2367754   .1322797     1.79   0.081    -.0301759    .5037268
+  uniontrendd |  -.0710276   .0984242    -0.72   0.475    -.2696557    .1276004
+      cendiv2 |   .7579658   .4208121     1.80   0.079    -.0912673    1.607199
+      cendiv8 |  -.4729696   .3163382    -1.50   0.142    -1.111366    .1654268
+      cendiv9 |  -.2803139   .3780568    -0.74   0.463    -1.043263    .4826356
+        _cons |   .0570868   .1196532     0.48   0.636     -.184383    .2985567
+-------------------------------------------------------------------------------
+
+. reg f1ptrendd  age2334trendd madminocc70sd mopocc70sd uniontrendd  cendiv2 cendiv8 cendiv9 if year==2000
+
+      Source |       SS           df       MS      Number of obs   =        51
+-------------+----------------------------------   F(7, 43)        =      6.22
+       Model |  25.1467332         7  3.59239045   Prob > F        =    0.0000
+    Residual |  24.8532658        43  .577982925   R-squared       =    0.5029
+-------------+----------------------------------   Adj R-squared   =    0.4220
+       Total |   49.999999        50  .999999979   Root MSE        =    .76025
+
+-------------------------------------------------------------------------------
+    f1ptrendd |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+--------------+----------------------------------------------------------------
+age2334trendd |  -.0738605   .1163771    -0.63   0.529    -.3085573    .1608364
+madminocc70sd |   .5286122   .1205379     4.39   0.000     .2855243    .7717001
+   mopocc70sd |   .3921241   .1412384     2.78   0.008     .1072897    .6769584
+  uniontrendd |  -.0890565   .1110611    -0.80   0.427    -.3130326    .1349196
+      cendiv2 |   .6281224   .4737017     1.33   0.192    -.3271881    1.583433
+      cendiv8 |  -.3497989   .3553116    -0.98   0.330    -1.066353    .3667553
+      cendiv9 |  -.8136252   .3928088    -2.07   0.044      -1.6058   -.0214508
+        _cons |   .0976892   .1345868     0.73   0.472    -.1737308    .3691093
+-------------------------------------------------------------------------------
+
+. reg f1ptrendd  age2334trendd madminocc70sd mopocc70sd uniontrendd  cendiv2 cendiv8 cendiv9 if year==2000 & state~=2
+
+      Source |       SS           df       MS      Number of obs   =        50
+-------------+----------------------------------   F(7, 42)        =      6.58
+       Model |  22.6703612         7  3.23862303   Prob > F        =    0.0000
+    Residual |  20.6860823        42   .49252577   R-squared       =    0.5229
+-------------+----------------------------------   Adj R-squared   =    0.4434
+       Total |  43.3564436        49  .884825379   Root MSE        =     .7018
+
+-------------------------------------------------------------------------------
+    f1ptrendd |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+--------------+----------------------------------------------------------------
+age2334trendd |  -.1024518   .1078785    -0.95   0.348    -.3201594    .1152558
+madminocc70sd |   .5300911   .1112718     4.76   0.000     .3055355    .7546468
+   mopocc70sd |   .3438053   .1314336     2.62   0.012     .0785617     .609049
+  uniontrendd |  -.0223515    .105056    -0.21   0.833     -.234363    .1896601
+      cendiv2 |   .6789653   .4376315     1.55   0.128    -.2042109    1.562141
+      cendiv8 |  -.4084127   .3286128    -1.24   0.221     -1.07158    .2547547
+      cendiv9 |  -.4203006    .387001    -1.09   0.284      -1.2013     .360699
+        _cons |   .1118654   .1243349     0.90   0.373    -.1390527    .3627834
+-------------------------------------------------------------------------------
+
+. reg f1ptrendd  age2334trendd age3544trendd madminocc70sd mopocc70sd uniontrendd  cendiv2 cendiv8 cendiv9 if year==2000 & state~=2
+
+      Source |       SS           df       MS      Number of obs   =        50
+-------------+----------------------------------   F(8, 41)        =      6.67
+       Model |  24.5164027         8  3.06455034   Prob > F        =    0.0000
+    Residual |  18.8400408        41  .459513191   R-squared       =    0.5655
+-------------+----------------------------------   Adj R-squared   =    0.4807
+       Total |  43.3564436        49  .884825379   Root MSE        =    .67787
+
+-------------------------------------------------------------------------------
+    f1ptrendd |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+--------------+----------------------------------------------------------------
+age2334trendd |  -.1003036   .1042059    -0.96   0.341    -.3107518    .1101445
+age3544trendd |   .3344227   .1668491     2.00   0.052     -.002536    .6713813
+madminocc70sd |    .471143   .1114293     4.23   0.000      .246107    .6961791
+   mopocc70sd |   .2507695    .135172     1.86   0.071    -.0222158    .5237548
+  uniontrendd |  -.0544249   .1027281    -0.53   0.599    -.2618885    .1530387
+      cendiv2 |   .7493889   .4241683     1.77   0.085    -.1072363    1.606014
+      cendiv8 |  -.4679312   .3187948    -1.47   0.150     -1.11175     .175888
+      cendiv9 |  -.2605028   .3822137    -0.68   0.499    -1.032399    .5113935
+        _cons |   .0687409   .1220078     0.56   0.576    -.1776589    .3151407
+-------------------------------------------------------------------------------
+
+. corr age2334trend age3544trend if year==2000
+(obs=51)
+
+             | age23~nd age35~nd
+-------------+------------------
+age2334trend |   1.0000
+age3544trend |   0.0444   1.0000
+
+
+. 
+. for any f1p avg ne en ue eu empchange migstate: reg Xtrendd age2334trendd if year==2000 \ estimates store Xmod \ reg Xtrendd age2334trendd madminocc70sd mopocc70sd uniontrendd cendiv2 cendiv8 cendiv9 if year==2000  \ estimates store Xmodb
+
+->  reg f1ptrendd age2334trendd if year==2000
+
+      Source |       SS           df       MS      Number of obs   =        51
+-------------+----------------------------------   F(1, 49)        =      0.06
+       Model |  .064548415         1  .064548415   Prob > F        =    0.8023
+    Residual |  49.9354505        49  1.01909083   R-squared       =    0.0013
+-------------+----------------------------------   Adj R-squared   =   -0.0191
+       Total |   49.999999        50  .999999979   Root MSE        =    1.0095
+
+-------------------------------------------------------------------------------
+    f1ptrendd |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+--------------+----------------------------------------------------------------
+age2334trendd |    -.03593   .1427649    -0.25   0.802    -.3228269    .2509668
+        _cons |   4.46e-09   .1413583     0.00   1.000    -.2840702    .2840702
+-------------------------------------------------------------------------------
+
+->  estimates store f1pmod
+
+->  reg f1ptrendd age2334trendd madminocc70sd mopocc70sd uniontrendd cendiv2 cendiv8 cendiv9 if year==2000
+
+      Source |       SS           df       MS      Number of obs   =        51
+-------------+----------------------------------   F(7, 43)        =      6.22
+       Model |  25.1467332         7  3.59239045   Prob > F        =    0.0000
+    Residual |  24.8532658        43  .577982925   R-squared       =    0.5029
+-------------+----------------------------------   Adj R-squared   =    0.4220
+       Total |   49.999999        50  .999999979   Root MSE        =    .76025
+
+-------------------------------------------------------------------------------
+    f1ptrendd |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+--------------+----------------------------------------------------------------
+age2334trendd |  -.0738605   .1163771    -0.63   0.529    -.3085573    .1608364
+madminocc70sd |   .5286122   .1205379     4.39   0.000     .2855243    .7717001
+   mopocc70sd |   .3921241   .1412384     2.78   0.008     .1072897    .6769584
+  uniontrendd |  -.0890565   .1110611    -0.80   0.427    -.3130326    .1349196
+      cendiv2 |   .6281224   .4737017     1.33   0.192    -.3271881    1.583433
+      cendiv8 |  -.3497989   .3553116    -0.98   0.330    -1.066353    .3667553
+      cendiv9 |  -.8136252   .3928088    -2.07   0.044      -1.6058   -.0214508
+        _cons |   .0976892   .1345868     0.73   0.472    -.1737308    .3691093
+-------------------------------------------------------------------------------
+
+->  estimates store f1pmodb
+
+->  reg avgtrendd age2334trendd if year==2000
+
+      Source |       SS           df       MS      Number of obs   =        51
+-------------+----------------------------------   F(1, 49)        =      0.59
+       Model |  .593936196         1  .593936196   Prob > F        =    0.4465
+    Residual |  49.4060646        49  1.00828703   R-squared       =    0.0119
+-------------+----------------------------------   Adj R-squared   =   -0.0083
+       Total |  50.0000008        50  1.00000002   Root MSE        =    1.0041
+
+-------------------------------------------------------------------------------
+    avgtrendd |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+--------------+----------------------------------------------------------------
+age2334trendd |   .1089896   .1420061     0.77   0.446    -.1763824    .3943616
+        _cons |   4.29e-09    .140607     0.00   1.000    -.2825604    .2825604
+-------------------------------------------------------------------------------
+
+->  estimates store avgmod
+
+->  reg avgtrendd age2334trendd madminocc70sd mopocc70sd uniontrendd cendiv2 cendiv8 cendiv9 if year==2000
+
+      Source |       SS           df       MS      Number of obs   =        51
+-------------+----------------------------------   F(7, 43)        =      6.48
+       Model |  25.6592154         7   3.6656022   Prob > F        =    0.0000
+    Residual |  24.3407854        43  .566064777   R-squared       =    0.5132
+-------------+----------------------------------   Adj R-squared   =    0.4339
+       Total |  50.0000008        50  1.00000002   Root MSE        =    .75237
+
+-------------------------------------------------------------------------------
+    avgtrendd |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+--------------+----------------------------------------------------------------
+age2334trendd |   .0322944    .115171     0.28   0.781    -.1999701    .2645589
+madminocc70sd |   .3853954   .1192887     3.23   0.002     .1448268     .625964
+   mopocc70sd |   .2097317   .1397746     1.50   0.141    -.0721506    .4916141
+  uniontrendd |  -.0541236   .1099101    -0.49   0.625    -.2757785    .1675313
+      cendiv2 |   .3305746   .4687923     0.71   0.485    -.6148352    1.275984
+      cendiv8 |  -1.030192   .3516292    -2.93   0.005     -1.73932   -.3210643
+      cendiv9 |  -1.301069   .3887378    -3.35   0.002    -2.085034   -.5171048
+        _cons |    .269709   .1331919     2.02   0.049     .0011019    .5383161
+-------------------------------------------------------------------------------
+
+->  estimates store avgmodb
+
+->  reg netrendd age2334trendd if year==2000
+
+      Source |       SS           df       MS      Number of obs   =        51
+-------------+----------------------------------   F(1, 49)        =      0.35
+       Model |  .356508199         1  .356508199   Prob > F        =    0.5558
+    Residual |  49.6434926        49   1.0131325   R-squared       =    0.0071
+-------------+----------------------------------   Adj R-squared   =   -0.0131
+       Total |  50.0000008        50  1.00000002   Root MSE        =    1.0065
+
+-------------------------------------------------------------------------------
+     netrendd |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+--------------+----------------------------------------------------------------
+age2334trendd |  -.0844403   .1423469    -0.59   0.556    -.3704972    .2016166
+        _cons |  -3.37e-09   .1409445    -0.00   1.000    -.2832385    .2832385
+-------------------------------------------------------------------------------
+
+->  estimates store nemod
+
+->  reg netrendd age2334trendd madminocc70sd mopocc70sd uniontrendd cendiv2 cendiv8 cendiv9 if year==2000
+
+      Source |       SS           df       MS      Number of obs   =        51
+-------------+----------------------------------   F(7, 43)        =      3.83
+       Model |  19.1932757         7  2.74189654   Prob > F        =    0.0026
+    Residual |   30.806725        43  .716435465   R-squared       =    0.3839
+-------------+----------------------------------   Adj R-squared   =    0.2836
+       Total |  50.0000008        50  1.00000002   Root MSE        =    .84643
+
+-------------------------------------------------------------------------------
+     netrendd |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+--------------+----------------------------------------------------------------
+age2334trendd |  -.1349214   .1295683    -1.04   0.304    -.3962207    .1263779
+madminocc70sd |   .4884567   .1342007     3.64   0.001     .2178152    .7590982
+   mopocc70sd |   .2929353   .1572475     1.86   0.069    -.0241845    .6100551
+  uniontrendd |   -.037927   .1236497    -0.31   0.761    -.2872904    .2114365
+      cendiv2 |   .7837883    .527395     1.49   0.145     -.279805    1.847382
+      cendiv8 |  -.1624183   .3955856    -0.41   0.683    -.9601926     .635356
+      cendiv9 |  -.7332997    .437333    -1.68   0.101    -1.615266    .1486662
+        _cons |   .0512643   .1498419     0.34   0.734    -.2509207    .3534494
+-------------------------------------------------------------------------------
+
+->  estimates store nemodb
+
+->  reg entrendd age2334trendd if year==2000
+
+      Source |       SS           df       MS      Number of obs   =        51
+-------------+----------------------------------   F(1, 49)        =      1.05
+       Model |  1.05082707         1  1.05082707   Prob > F        =    0.3101
+    Residual |  48.9491714        49  .998962682   R-squared       =    0.0210
+-------------+----------------------------------   Adj R-squared   =    0.0010
+       Total |  49.9999985        50  .999999969   Root MSE        =    .99948
+
+-------------------------------------------------------------------------------
+     entrendd |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+--------------+----------------------------------------------------------------
+age2334trendd |  -.1449708    .141348    -1.03   0.310    -.4290202    .1390786
+        _cons |   6.77e-10   .1399554     0.00   1.000    -.2812508    .2812508
+-------------------------------------------------------------------------------
+
+->  estimates store enmod
+
+->  reg entrendd age2334trendd madminocc70sd mopocc70sd uniontrendd cendiv2 cendiv8 cendiv9 if year==2000
+
+      Source |       SS           df       MS      Number of obs   =        51
+-------------+----------------------------------   F(7, 43)        =      3.00
+       Model |  16.4063921         7  2.34377031   Prob > F        =    0.0118
+    Residual |  33.5936063        43  .781246659   R-squared       =    0.3281
+-------------+----------------------------------   Adj R-squared   =    0.2188
+       Total |  49.9999985        50  .999999969   Root MSE        =    .88388
+
+-------------------------------------------------------------------------------
+     entrendd |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+--------------+----------------------------------------------------------------
+age2334trendd |  -.1220787    .135302    -0.90   0.372    -.3949412    .1507838
+madminocc70sd |   .5133385   .1401394     3.66   0.001     .2307205    .7959566
+   mopocc70sd |   .4391255   .1642061     2.67   0.011     .1079723    .7702786
+  uniontrendd |    .036919   .1291215     0.29   0.776    -.2234794    .2973173
+      cendiv2 |   .4188039   .5507335     0.76   0.451    -.6918561    1.529464
+      cendiv8 |   .3912389   .4130912     0.95   0.349     -.441839    1.224317
+      cendiv9 |  -.1644303   .4566861    -0.36   0.721    -1.085426    .7565649
+        _cons |  -.0698857   .1564728    -0.45   0.657    -.3854432    .2456718
+-------------------------------------------------------------------------------
+
+->  estimates store enmodb
+
+->  reg uetrendd age2334trendd if year==2000
+
+      Source |       SS           df       MS      Number of obs   =        51
+-------------+----------------------------------   F(1, 49)        =      0.49
+       Model |  .491724287         1  .491724287   Prob > F        =    0.4887
+    Residual |  49.5082753        49  1.01037296   R-squared       =    0.0098
+-------------+----------------------------------   Adj R-squared   =   -0.0104
+       Total |  49.9999996        50  .999999991   Root MSE        =    1.0052
+
+-------------------------------------------------------------------------------
+     uetrendd |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+--------------+----------------------------------------------------------------
+age2334trendd |    .099169   .1421529     0.70   0.489    -.1864981     .384836
+        _cons |  -2.98e-09   .1407524    -0.00   1.000    -.2828525    .2828525
+-------------------------------------------------------------------------------
+
+->  estimates store uemod
+
+->  reg uetrendd age2334trendd madminocc70sd mopocc70sd uniontrendd cendiv2 cendiv8 cendiv9 if year==2000
+
+      Source |       SS           df       MS      Number of obs   =        51
+-------------+----------------------------------   F(7, 43)        =      1.49
+       Model |    9.757429         7  1.39391843   Prob > F        =    0.1967
+    Residual |  40.2425706        43  .935873734   R-squared       =    0.1951
+-------------+----------------------------------   Adj R-squared   =    0.0641
+       Total |  49.9999996        50  .999999991   Root MSE        =    .96741
+
+-------------------------------------------------------------------------------
+     uetrendd |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+--------------+----------------------------------------------------------------
+age2334trendd |   .0359116   .1480876     0.24   0.810    -.2627355    .3345588
+madminocc70sd |   .2160172   .1533822     1.41   0.166    -.0933074    .5253418
+   mopocc70sd |  -.0228527   .1797231    -0.13   0.899    -.3852989    .3395934
+  uniontrendd |   .1939972   .1413231     1.37   0.177     -.091008    .4790024
+      cendiv2 |    .067388   .6027762     0.11   0.912    -1.148226    1.283002
+      cendiv8 |  -.6702249   .4521271    -1.48   0.146    -1.582026    .2415763
+      cendiv9 |  -.9365207   .4998415    -1.87   0.068    -1.944547    .0715057
+        _cons |   .1929851    .171259     1.13   0.266    -.1523917    .5383618
+-------------------------------------------------------------------------------
+
+->  estimates store uemodb
+
+->  reg eutrendd age2334trendd if year==2000
+
+      Source |       SS           df       MS      Number of obs   =        51
+-------------+----------------------------------   F(1, 49)        =     12.39
+       Model |  10.0915982         1  10.0915982   Prob > F        =    0.0009
+    Residual |  39.9084019        49  .814457182   R-squared       =    0.2018
+-------------+----------------------------------   Adj R-squared   =    0.1855
+       Total |  50.0000001        50           1   Root MSE        =    .90247
+
+-------------------------------------------------------------------------------
+     eutrendd |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+--------------+----------------------------------------------------------------
+age2334trendd |   .4492571   .1276289     3.52   0.001     .1927772    .7057371
+        _cons |   1.75e-10   .1263715     0.00   1.000     -.253953     .253953
+-------------------------------------------------------------------------------
+
+->  estimates store eumod
+
+->  reg eutrendd age2334trendd madminocc70sd mopocc70sd uniontrendd cendiv2 cendiv8 cendiv9 if year==2000
+
+      Source |       SS           df       MS      Number of obs   =        51
+-------------+----------------------------------   F(7, 43)        =      3.42
+       Model |  17.8825172         7  2.55464531   Prob > F        =    0.0054
+    Residual |  32.1174829        43  .746918208   R-squared       =    0.3577
+-------------+----------------------------------   Adj R-squared   =    0.2531
+       Total |  50.0000001        50           1   Root MSE        =    .86424
+
+-------------------------------------------------------------------------------
+     eutrendd |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+--------------+----------------------------------------------------------------
+age2334trendd |   .3694856    .132296     2.79   0.008     .1026854    .6362859
+madminocc70sd |   .3063769   .1370259     2.24   0.031     .0300378     .582716
+   mopocc70sd |  -.1172169   .1605579    -0.73   0.469    -.4410128     .206579
+  uniontrendd |  -.0728396   .1262528    -0.58   0.567    -.3274527    .1817735
+      cendiv2 |  -1.004336   .5384978    -1.87   0.069    -2.090321     .081648
+      cendiv8 |   .0717516   .4039136     0.18   0.860    -.7428178    .8863209
+      cendiv9 |  -.5501263   .4465398    -1.23   0.225     -1.45066    .3504071
+        _cons |   .1017574   .1529964     0.67   0.510    -.2067893    .4103041
+-------------------------------------------------------------------------------
+
+->  estimates store eumodb
+
+->  reg empchangetrendd age2334trendd if year==2000
+
+      Source |       SS           df       MS      Number of obs   =        51
+-------------+----------------------------------   F(1, 49)        =      0.58
+       Model |  .588071299         1  .588071299   Prob > F        =    0.4487
+    Residual |  49.4119285        49   1.0084067   R-squared       =    0.0118
+-------------+----------------------------------   Adj R-squared   =   -0.0084
+       Total |  49.9999998        50  .999999996   Root MSE        =    1.0042
+
+-------------------------------------------------------------------------------
+empchanget~dd |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+--------------+----------------------------------------------------------------
+age2334trendd |   .1084501   .1420146     0.76   0.449    -.1769388     .393839
+        _cons |  -7.34e-09   .1406154    -0.00   1.000    -.2825772    .2825771
+-------------------------------------------------------------------------------
+
+->  estimates store empchangemod
+
+->  reg empchangetrendd age2334trendd madminocc70sd mopocc70sd uniontrendd cendiv2 cendiv8 cendiv9 if year==2000
+
+      Source |       SS           df       MS      Number of obs   =        51
+-------------+----------------------------------   F(7, 43)        =      4.01
+       Model |     19.7452         7  2.82074285   Prob > F        =    0.0019
+    Residual |  30.2547999        43  .703599997   R-squared       =    0.3949
+-------------+----------------------------------   Adj R-squared   =    0.2964
+       Total |  49.9999998        50  .999999996   Root MSE        =    .83881
+
+-------------------------------------------------------------------------------
+empchanget~dd |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+--------------+----------------------------------------------------------------
+age2334trendd |   .0361602   .1284024     0.28   0.780    -.2227879    .2951082
+madminocc70sd |   .1723895   .1329931     1.30   0.202    -.0958167    .4405956
+   mopocc70sd |   .1282656   .1558325     0.82   0.415    -.1860007    .4425318
+  uniontrendd |  -.2281219   .1225371    -1.86   0.069    -.4752415    .0189976
+      cendiv2 |   .0397576   .5226493     0.08   0.940    -1.014265     1.09378
+      cendiv8 |  -1.048357    .392026    -2.67   0.011    -1.838952   -.2577611
+      cendiv9 |  -1.196595   .4333977    -2.76   0.008    -2.070625   -.3225654
+        _cons |   .2794227   .1484936     1.88   0.067    -.0200432    .5788886
+-------------------------------------------------------------------------------
+
+->  estimates store empchangemodb
+
+->  reg migstatetrendd age2334trendd if year==2000
+
+      Source |       SS           df       MS      Number of obs   =        51
+-------------+----------------------------------   F(1, 49)        =      2.03
+       Model |  1.98594366         1  1.98594366   Prob > F        =    0.1609
+    Residual |  48.0140561        49  .979878696   R-squared       =    0.0397
+-------------+----------------------------------   Adj R-squared   =    0.0201
+       Total |  49.9999997        50  .999999995   Root MSE        =    .98989
+
+-------------------------------------------------------------------------------
+migstatetr~dd |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+--------------+----------------------------------------------------------------
+age2334trendd |   .1992959   .1399913     1.42   0.161    -.0820272    .4806191
+        _cons |  -1.81e-10   .1386121    -0.00   1.000    -.2785514    .2785514
+-------------------------------------------------------------------------------
+
+->  estimates store migstatemod
+
+->  reg migstatetrendd age2334trendd madminocc70sd mopocc70sd uniontrendd cendiv2 cendiv8 cendiv9 if year==2000
+
+      Source |       SS           df       MS      Number of obs   =        51
+-------------+----------------------------------   F(7, 43)        =      8.65
+       Model |  29.2324643         7  4.17606632   Prob > F        =    0.0000
+    Residual |  20.7675355        43  .482965942   R-squared       =    0.5846
+-------------+----------------------------------   Adj R-squared   =    0.5170
+       Total |  49.9999997        50  .999999995   Root MSE        =    .69496
+
+-------------------------------------------------------------------------------
+migstatetr~dd |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+--------------+----------------------------------------------------------------
+age2334trendd |   .2025701   .1063821     1.90   0.064    -.0119698    .4171099
+madminocc70sd |   .0286935   .1101855     0.26   0.796    -.1935167    .2509038
+   mopocc70sd |    .266228   .1291081     2.06   0.045     .0058567    .5265992
+  uniontrendd |  -.3152613   .1015226    -3.11   0.003    -.5200012   -.1105214
+      cendiv2 |   .2483302   .4330177     0.57   0.569    -.6249333    1.121594
+      cendiv8 |  -1.281106   .3247956    -3.94   0.000    -1.936119   -.6260936
+      cendiv9 |  -.4133989   .3590723    -1.15   0.256    -1.137537    .3107394
+        _cons |   .2268795   .1230277     1.84   0.072    -.0212296    .4749886
+-------------------------------------------------------------------------------
+
+->  estimates store migstatemodb
+
+. estout f1pmod avgmod nemod enmod uemod eumod empchangemod migstatemod , keep(age2334trendd) cells(b(star fmt(2)) se(par fmt(2))) stats(N r2_a, fmt(%15.0f %15.2f)) 
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+                   f1pmod          avgmod           nemod           enmod           uemod           eumod    empchangemod     migstatemod   
+                     b/se            b/se            b/se            b/se            b/se            b/se            b/se            b/se   
+--------------------------------------------------------------------------------------------------------------------------------------------
+age2334tr~dd        -0.04            0.11           -0.08           -0.14            0.10            0.45***         0.11            0.20   
+                   (0.14)          (0.14)          (0.14)          (0.14)          (0.14)          (0.13)          (0.14)          (0.14)   
+--------------------------------------------------------------------------------------------------------------------------------------------
+N                      51              51              51              51              51              51              51              51   
+r2_a                -0.02           -0.01           -0.01            0.00           -0.01            0.19           -0.01            0.02   
+--------------------------------------------------------------------------------------------------------------------------------------------
+
+. estout f1pmodb avgmodb nemodb enmodb uemodb eumodb empchangemodb migstatemodb , keep(age2334trendd) cells(b(star fmt(2)) se(par fmt(2))) stats(N r2_a, fmt(%15.0f %15.2f)) 
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+                  f1pmodb         avgmodb          nemodb          enmodb          uemodb          eumodb    empchangem~b    migstatemodb   
+                     b/se            b/se            b/se            b/se            b/se            b/se            b/se            b/se   
+--------------------------------------------------------------------------------------------------------------------------------------------
+age2334tr~dd        -0.07            0.03           -0.13           -0.12            0.04            0.37**          0.04            0.20   
+                   (0.12)          (0.12)          (0.13)          (0.14)          (0.15)          (0.13)          (0.13)          (0.11)   
+--------------------------------------------------------------------------------------------------------------------------------------------
+N                      51              51              51              51              51              51              51              51   
+r2_a                 0.42            0.43            0.28            0.22            0.06            0.25            0.30            0.52   
+--------------------------------------------------------------------------------------------------------------------------------------------
+
+. 
+. 
+. 
+. quietly log close

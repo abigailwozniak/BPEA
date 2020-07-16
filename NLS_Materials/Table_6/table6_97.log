@@ -1,0 +1,367 @@
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  H:\Other\Paper Codes for Uploading\BPEA\NLS_Materials\Table_6\table6_97.log
+  log type:  text
+ opened on:   3 Mar 2020, 17:04:33
+
+. 
+. /*** Regression estimation of returns to various forms of tenure in NLSY 1997 ***/
+. /*** UPDATED version of file with same name that produced T7 for NBER paper ***/
+. 
+. cd ..\Data_Tables_5_6_7\.
+H:\Other\Paper Codes for Uploading\BPEA\NLS_Materials\Data_Tables_5_6_7
+
+. 
+. use NLSY_Datasets\nlsy97tenure2013.dta
+
+. 
+. cd ..\Table_6\.
+H:\Other\Paper Codes for Uploading\BPEA\NLS_Materials\Table_6
+
+. 
+. keep rhrp1* rpce_hrp1* tenureyr1* jobten* indten* occten* edgrp4* black hisp female age* edgrp4* wkswkann* pubid custwt
+
+. reshape long rhrp1_ rpce_hrp1_ tenureyr1_ jobten indten occten age edgrp4_ wkswkann, i(pubid) j(year)
+(note: j = 1996 1997 1998 1999 2000 2001 2002 2003 2004 2005 2006 2007 2008 2009 2010 2011 2012 2013)
+(note: rhrp1_1996 not found)
+(note: rpce_hrp1_1996 not found)
+(note: tenureyr1_1996 not found)
+(note: jobten1996 not found)
+(note: indten1996 not found)
+(note: occten1996 not found)
+(note: age1996 not found)
+(note: edgrp4_1996 not found)
+(note: rhrp1_2012 not found)
+(note: rpce_hrp1_2012 not found)
+(note: tenureyr1_2012 not found)
+(note: jobten2012 not found)
+(note: indten2012 not found)
+(note: occten2012 not found)
+(note: age2012 not found)
+(note: edgrp4_2012 not found)
+
+Data                               wide   ->   long
+-----------------------------------------------------------------------------
+Number of obs.                     8984   ->  161712
+Number of variables                 151   ->      15
+j variable (18 values)                    ->   year
+xij variables:
+   rhrp1_1996 rhrp1_1997 ... rhrp1_2013   ->   rhrp1_
+rpce_hrp1_1996 rpce_hrp1_1997 ... rpce_hrp1_2013->rpce_hrp1_
+tenureyr1_1996 tenureyr1_1997 ... tenureyr1_2013->tenureyr1_
+   jobten1996 jobten1997 ... jobten2013   ->   jobten
+   indten1996 indten1997 ... indten2013   ->   indten
+   occten1996 occten1997 ... occten2013   ->   occten
+            age1996 age1997 ... age2013   ->   age
+edgrp4_1996 edgrp4_1997 ... edgrp4_2013   ->   edgrp4_
+wkswkann1996 wkswkann1997 ... wkswkann2013->   wkswkann
+-----------------------------------------------------------------------------
+
+. summ
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+       pubid |    161,712    4504.302    2602.999          1       9022
+        year |    161,712      2004.5    5.188144       1996       2013
+    wkswkann |    154,384    28.35976    22.97285         -4         53
+      custwt |    161,712    215699.6    93096.06      76071    1576182
+       black |    161,712    .2599065    .4385844          0          1
+-------------+---------------------------------------------------------
+        hisp |    161,712    .2115984    .4084428          0          1
+      female |    161,712    .4880899    .4998597          0          1
+         age |    124,099    21.95154    5.092647         12         34
+     edgrp4_ |    143,502    2.084229     1.05859          1          4
+      rhrp1_ |     89,495     5.48673    2.909854   .4112149   23.52795
+-------------+---------------------------------------------------------
+  rpce_hrp1_ |     89,495    11.64364    6.298112   .8319992   50.95192
+  tenureyr1_ |     94,758    1.810885    2.189719   .0192322    23.6749
+      jobten |     83,614    1.771756    2.164739   .0192322   23.98154
+      indten |     82,662    2.035141    2.329417   .0192322    23.0967
+      occten |     82,964    1.968521    2.278035   .0192322    23.0967
+
+. 
+. gen age2 = age^2 
+(37,613 missing values generated)
+
+. 
+. char edgrp4_[omit] 2
+
+. xi, prefix(_Y) i.year
+i.year            _Yyear_1996-2013    (naturally coded; _Yyear_1996 omitted)
+
+. xi, prefix(_E) i.edgrp4_
+i.edgrp4_         _Eedgrp4__1-4       (naturally coded; _Eedgrp4__2 omitted)
+
+. 
+. *gen lnrhw=ln(rhrp1_)
+. gen lnrhw=ln(rpce_hrp1_)
+(72,217 missing values generated)
+
+. 
+. qui gen ind2=indten*indten
+
+. qui gen occ2=occten*occten
+
+. qui gen job2=jobten*jobten
+
+. 
+. *** Create samples 
+. 
+. gen cond=(rpce_hrp1_~=. & tenureyr1_~=. & edgrp4_~=. & age~=. & black~=. & hisp~=. & female~=. & jobten~=. & indten~=. & occten~=.)
+
+. summ age wkswkann if cond==1
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+         age |     69,907    22.17838     4.56959         13         34
+    wkswkann |     69,907    39.43126    16.45755         -3         53
+
+. 
+. drop if female==1
+(78,930 observations deleted)
+
+. 
+. gen sample1=0
+
+. replace sample1=1 if (age>=22 & age<=33) & cond==1
+(17,517 real changes made)
+
+. gen sample2=0
+
+. replace sample2=1 if (age>=22 & age<=33) & cond==1 & wkswkann >= 26
+(15,842 real changes made)
+
+. 
+. summ sample*
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+     sample1 |     82,782     .211604     .408448          0          1
+     sample2 |     82,782    .1913701    .3933821          0          1
+
+. 
+. tab1 year if sample2==1
+
+-> tabulation of year if sample2==1 
+
+       year |      Freq.     Percent        Cum.
+------------+-----------------------------------
+       2002 |        203        1.28        1.28
+       2003 |        628        3.96        5.25
+       2004 |        986        6.22       11.47
+       2005 |      1,430        9.03       20.50
+       2006 |      1,874       11.83       32.33
+       2007 |      1,974       12.46       44.79
+       2008 |      1,896       11.97       56.75
+       2009 |      1,776       11.21       67.96
+       2010 |      1,732       10.93       78.90
+       2011 |      1,711       10.80       89.70
+       2013 |      1,632       10.30      100.00
+------------+-----------------------------------
+      Total |     15,842      100.00
+
+. 
+. * ind, occ, job with individual FEs - same as NBER spec (reported all years) but excludes locten and adds education group dummies
+. * Other changes were made to data - esp fixed default coding of missing wages as negatives
+. 
+. xtset pubid year
+       panel variable:  pubid (strongly balanced)
+        time variable:  year, 1996 to 2013
+                delta:  1 unit
+
+. xtreg lnrhw jobten job2 indten ind2 occten occ2 _E* _Y* if sample2==1 [w=custwt], fe cluster(pubid)
+(analytic weights assumed)
+note: _Yyear_1997 omitted because of collinearity
+note: _Yyear_1998 omitted because of collinearity
+note: _Yyear_1999 omitted because of collinearity
+note: _Yyear_2000 omitted because of collinearity
+note: _Yyear_2001 omitted because of collinearity
+note: _Yyear_2012 omitted because of collinearity
+note: _Yyear_2013 omitted because of collinearity
+
+Fixed-effects (within) regression               Number of obs     =     15,842
+Group variable: pubid                           Number of groups  =      2,805
+
+R-sq:                                           Obs per group:
+     within  = 0.1600                                         min =          1
+     between = 0.0753                                         avg =        5.6
+     overall = 0.1033                                         max =         11
+
+                                                F(19,2804)        =      60.44
+corr(u_i, Xb)  = 0.0323                         Prob > F          =     0.0000
+
+                              (Std. Err. adjusted for 2,805 clusters in pubid)
+------------------------------------------------------------------------------
+             |               Robust
+       lnrhw |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+      jobten |   .0008513   .0108033     0.08   0.937     -.020332    .0220346
+        job2 |  -.0000662   .0008185    -0.08   0.936    -.0016712    .0015387
+      indten |   .0065372   .0099456     0.66   0.511    -.0129642    .0260385
+        ind2 |  -.0003322   .0007545    -0.44   0.660    -.0018116    .0011473
+      occten |   .0216758   .0104849     2.07   0.039     .0011168    .0422347
+        occ2 |   -.001997   .0007812    -2.56   0.011    -.0035288   -.0004651
+ _Eedgrp4__1 |   .0186937   .0273539     0.68   0.494    -.0349421    .0723296
+ _Eedgrp4__3 |  -.0055518   .0206993    -0.27   0.789    -.0461391    .0350355
+ _Eedgrp4__4 |   .1220053   .0310505     3.93   0.000     .0611211    .1828895
+ _Yyear_1997 |          0  (omitted)
+ _Yyear_1998 |          0  (omitted)
+ _Yyear_1999 |          0  (omitted)
+ _Yyear_2000 |          0  (omitted)
+ _Yyear_2001 |          0  (omitted)
+ _Yyear_2002 |  -.4607146   .0303536   -15.18   0.000    -.5202322    -.401197
+ _Yyear_2003 |  -.4319019   .0254957   -16.94   0.000     -.481894   -.3819097
+ _Yyear_2004 |  -.3781852   .0223956   -16.89   0.000    -.4220987   -.3342718
+ _Yyear_2005 |  -.3092236   .0194527   -15.90   0.000    -.3473666   -.2710805
+ _Yyear_2006 |  -.2639196    .017113   -15.42   0.000    -.2974749   -.2303643
+ _Yyear_2007 |  -.1975891   .0155485   -12.71   0.000    -.2280768   -.1671015
+ _Yyear_2008 |  -.1643752    .014727   -11.16   0.000    -.1932522   -.1354983
+ _Yyear_2009 |  -.1359879   .0136892    -9.93   0.000    -.1628298   -.1091459
+ _Yyear_2010 |   -.108899   .0124033    -8.78   0.000    -.1332196   -.0845785
+ _Yyear_2011 |  -.0703944   .0110113    -6.39   0.000    -.0919854   -.0488034
+ _Yyear_2012 |          0  (omitted)
+ _Yyear_2013 |          0  (omitted)
+       _cons |    2.73303   .0255616   106.92   0.000     2.682909    2.783151
+-------------+----------------------------------------------------------------
+     sigma_u |  .38211883
+     sigma_e |  .29174596
+         rho |   .6317418   (fraction of variance due to u_i)
+------------------------------------------------------------------------------
+
+. 
+. * compute implied returns going from two to three years of tenure and standard errors 
+. nlcom 1*_b[indten] + 5*_b[ind2]
+
+       _nl_1:  1*_b[indten] + 5*_b[ind2]
+
+------------------------------------------------------------------------------
+       lnrhw |      Coef.   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+       _nl_1 |   .0048763   .0071548     0.68   0.496    -.0091469    .0188994
+------------------------------------------------------------------------------
+
+. nlcom 1*_b[occten] + 5*_b[occ2]
+
+       _nl_1:  1*_b[occten] + 5*_b[occ2]
+
+------------------------------------------------------------------------------
+       lnrhw |      Coef.   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+       _nl_1 |    .011691   .0075615     1.55   0.122    -.0031293    .0265113
+------------------------------------------------------------------------------
+
+. nlcom 1*_b[jobten] + 5*_b[job2]
+
+       _nl_1:  1*_b[jobten] + 5*_b[job2]
+
+------------------------------------------------------------------------------
+       lnrhw |      Coef.   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+       _nl_1 |   .0005202   .0076319     0.07   0.946     -.014438    .0154784
+------------------------------------------------------------------------------
+
+. 
+. 
+. xtreg lnrhw jobten job2 indten ind2 occten occ2 _E* _Y* if sample2==1 & year < 2008 [w=custwt], fe cluster(pubid)
+(analytic weights assumed)
+note: _Yyear_1997 omitted because of collinearity
+note: _Yyear_1998 omitted because of collinearity
+note: _Yyear_1999 omitted because of collinearity
+note: _Yyear_2000 omitted because of collinearity
+note: _Yyear_2001 omitted because of collinearity
+note: _Yyear_2007 omitted because of collinearity
+note: _Yyear_2008 omitted because of collinearity
+note: _Yyear_2009 omitted because of collinearity
+note: _Yyear_2010 omitted because of collinearity
+note: _Yyear_2011 omitted because of collinearity
+note: _Yyear_2012 omitted because of collinearity
+note: _Yyear_2013 omitted because of collinearity
+
+Fixed-effects (within) regression               Number of obs     =      7,095
+Group variable: pubid                           Number of groups  =      2,556
+
+R-sq:                                           Obs per group:
+     within  = 0.1203                                         min =          1
+     between = 0.0048                                         avg =        2.8
+     overall = 0.0251                                         max =          6
+
+                                                F(14,2555)        =      27.77
+corr(u_i, Xb)  = -0.1243                        Prob > F          =     0.0000
+
+                              (Std. Err. adjusted for 2,556 clusters in pubid)
+------------------------------------------------------------------------------
+             |               Robust
+       lnrhw |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+      jobten |   .0125201   .0235254     0.53   0.595    -.0336107     .058651
+        job2 |  -.0003431   .0024566    -0.14   0.889    -.0051602     .004474
+      indten |   .0038689   .0178898     0.22   0.829    -.0312112    .0389489
+        ind2 |  -.0008511   .0020657    -0.41   0.680    -.0049017    .0031996
+      occten |  -.0022935   .0272136    -0.08   0.933    -.0556566    .0510695
+        occ2 |  -.0024986    .002953    -0.85   0.398    -.0082891     .003292
+ _Eedgrp4__1 |   .0259618   .0274994     0.94   0.345    -.0279616    .0798852
+ _Eedgrp4__3 |   .0135491   .0238878     0.57   0.571    -.0332923    .0603905
+ _Eedgrp4__4 |   .1058682   .0363314     2.91   0.004     .0346263    .1771101
+ _Yyear_1997 |          0  (omitted)
+ _Yyear_1998 |          0  (omitted)
+ _Yyear_1999 |          0  (omitted)
+ _Yyear_2000 |          0  (omitted)
+ _Yyear_2001 |          0  (omitted)
+ _Yyear_2002 |  -.3390901   .0268139   -12.65   0.000    -.3916694   -.2865109
+ _Yyear_2003 |  -.2853471    .021793   -13.09   0.000    -.3280807   -.2426134
+ _Yyear_2004 |  -.2214099   .0182742   -12.12   0.000    -.2572435   -.1855762
+ _Yyear_2005 |   -.140329   .0129768   -10.81   0.000    -.1657752   -.1148829
+ _Yyear_2006 |  -.0873134    .009632    -9.06   0.000    -.1062008    -.068426
+ _Yyear_2007 |          0  (omitted)
+ _Yyear_2008 |          0  (omitted)
+ _Yyear_2009 |          0  (omitted)
+ _Yyear_2010 |          0  (omitted)
+ _Yyear_2011 |          0  (omitted)
+ _Yyear_2012 |          0  (omitted)
+ _Yyear_2013 |          0  (omitted)
+       _cons |   2.620811   .0255407   102.61   0.000     2.570728    2.670893
+-------------+----------------------------------------------------------------
+     sigma_u |  .38736751
+     sigma_e |  .26788499
+         rho |  .67647789   (fraction of variance due to u_i)
+------------------------------------------------------------------------------
+
+. 
+. * compute implied returns going from two to three years of tenure and standard errors 
+. nlcom 1*_b[indten] + 5*_b[ind2]
+
+       _nl_1:  1*_b[indten] + 5*_b[ind2]
+
+------------------------------------------------------------------------------
+       lnrhw |      Coef.   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+       _nl_1 |  -.0003865   .0131883    -0.03   0.977    -.0262351    .0254622
+------------------------------------------------------------------------------
+
+. nlcom 1*_b[occten] + 5*_b[occ2]
+
+       _nl_1:  1*_b[occten] + 5*_b[occ2]
+
+------------------------------------------------------------------------------
+       lnrhw |      Coef.   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+       _nl_1 |  -.0147864   .0177714    -0.83   0.405    -.0496177     .020045
+------------------------------------------------------------------------------
+
+. nlcom 1*_b[jobten] + 5*_b[job2]
+
+       _nl_1:  1*_b[jobten] + 5*_b[job2]
+
+------------------------------------------------------------------------------
+       lnrhw |      Coef.   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+       _nl_1 |   .0108044   .0140115     0.77   0.441    -.0166575    .0382664
+------------------------------------------------------------------------------
+
+. 
+. log close
+      name:  <unnamed>
+       log:  H:\Other\Paper Codes for Uploading\BPEA\NLS_Materials\Table_6\table6_97.log
+  log type:  text
+ closed on:   3 Mar 2020, 17:04:39
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------

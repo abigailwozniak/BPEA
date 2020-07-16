@@ -1,0 +1,295 @@
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  H:\Other\Paper Codes for Uploading\BPEA\NLS_Materials\Table_6\table6_79.log
+  log type:  text
+ opened on:   3 Mar 2020, 17:03:54
+
+. 
+. /*** Regression estimation of returns to various forms of tenure in NLSY ***/
+. /*** UPDATED version of file with same name that produced T7 for NBER paper ***/
+. 
+. cd ..\Data_Tables_5_6_7\.
+H:\Other\Paper Codes for Uploading\BPEA\NLS_Materials\Data_Tables_5_6_7
+
+. 
+. use NLSY_Datasets\nlsy79tenure.dta
+
+. 
+. cd ..\Table_6\.
+H:\Other\Paper Codes for Uploading\BPEA\NLS_Materials\Table_6
+
+. 
+. foreach x of numlist 80/94 {
+  2.   replace hgcrev`x'=. if hgcrev`x' < 0
+  3. }
+(546 real changes made, 546 to missing)
+(501 real changes made, 501 to missing)
+(603 real changes made, 603 to missing)
+(509 real changes made, 509 to missing)
+(639 real changes made, 639 to missing)
+(1,817 real changes made, 1,817 to missing)
+(2,069 real changes made, 2,069 to missing)
+(2,240 real changes made, 2,240 to missing)
+(2,262 real changes made, 2,262 to missing)
+(2,111 real changes made, 2,111 to missing)
+(2,287 real changes made, 2,287 to missing)
+(3,683 real changes made, 3,683 to missing)
+(3,677 real changes made, 3,677 to missing)
+(3,676 real changes made, 3,676 to missing)
+(3,800 real changes made, 3,800 to missing)
+
+. 
+. keep rcpshrp* rpce_cpshrp* tenureyr1* jobten* indten* occten* hgcrev* esr_key* black hisp female age* edgrp4* wkswk_pcy* job1iscps* caseid custwt
+
+. reshape long rcpshrp rpce_cpshrp tenureyr1_ jobten indten occten hgcrev esr_key age edgrp4_ wkswk_pcy job1iscps, i(caseid) j(year)
+(note: j = 79 80 81 82 83 84 85 86 87 88 89 90 91 92 93 94)
+(note: job1iscps79 not found)
+
+Data                               wide   ->   long
+-----------------------------------------------------------------------------
+Number of obs.                    12686   ->  202976
+Number of variables                 197   ->      19
+j variable (16 values)                    ->   year
+xij variables:
+      rcpshrp79 rcpshrp80 ... rcpshrp94   ->   rcpshrp
+rpce_cpshrp79 rpce_cpshrp80 ... rpce_cpshrp94->rpce_cpshrp
+tenureyr1_79 tenureyr1_80 ... tenureyr1_94->   tenureyr1_
+         jobten79 jobten80 ... jobten94   ->   jobten
+         indten79 indten80 ... indten94   ->   indten
+         occten79 occten80 ... occten94   ->   occten
+         hgcrev79 hgcrev80 ... hgcrev94   ->   hgcrev
+      esr_key79 esr_key80 ... esr_key94   ->   esr_key
+                  age79 age80 ... age94   ->   age
+      edgrp4_79 edgrp4_80 ... edgrp4_94   ->   edgrp4_
+wkswk_pcy79 wkswk_pcy80 ... wkswk_pcy94   ->   wkswk_pcy
+job1iscps79 job1iscps80 ... job1iscps94   ->   job1iscps
+-----------------------------------------------------------------------------
+
+. summ
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+      caseid |    202,976      6343.5    3662.142          1      12686
+        year |    202,976        86.5    4.609784         79         94
+age_intchk79 |    202,976    1.925114    .2632075          1          2
+     esr_key |    202,976    1.306859    3.269844         -5          8
+   wkswk_pcy |    202,976     26.4165    23.95001         -5         52
+-------------+---------------------------------------------------------
+      hgcrev |    172,556    12.25166    2.338165         -3         20
+      custwt |    202,976    264539.7    214412.7       6893    1058864
+       black |    202,976    .2501971    .4331275          0          1
+        hisp |    202,976    .1578118    .3645653          0          1
+      female |    202,976    .4952704    .4999789          0          1
+-------------+---------------------------------------------------------
+         age |    172,908    24.88472    5.160759         14         37
+     edgrp4_ |    202,951    2.187045    .9318502          1          4
+     rcpshrp |    118,305    6.156335    2.982969   1.143251   23.51552
+ rpce_cpshrp |    118,305    11.82444    5.818716   2.089943   46.58904
+  tenureyr1_ |    134,877    2.297302    2.816058   .0192322   20.11693
+-------------+---------------------------------------------------------
+   job1iscps |    190,290   -.5565768     2.45018         -5          1
+      jobten |     72,235     2.47745    2.916069   .0192322   19.55804
+      indten |     72,565    2.768902    3.084891   .0192322   20.32733
+      occten |     72,655    2.743858    3.067606   .0192322   21.46204
+
+. 
+. * CHANGE from NBER analysis - use age calculated using birth and interview months
+. gen age2 = age^2 
+(30,068 missing values generated)
+
+. 
+. char edgrp4_[omit] 2
+
+. xi, prefix(_Y) i.year
+i.year            _Yyear_79-94        (naturally coded; _Yyear_79 omitted)
+
+. xi, prefix(_E) i.edgrp4_
+i.edgrp4_         _Eedgrp4__1-4       (naturally coded; _Eedgrp4__2 omitted)
+
+. 
+. * CHANGE from NBER analysis - use pce deflator
+. *gen lnrhw=ln(rcpshrp)
+. gen lnrhw=ln(rpce_cpshrp)
+(84,671 missing values generated)
+
+. 
+. qui gen ind2=indten*indten
+
+. qui gen occ2=occten*occten
+
+. qui gen job2=jobten*jobten
+
+. 
+. 
+. *** Create samples 
+. 
+. gen cond=(lnrhw~=. & tenureyr1_~=. & hgcrev~=. & age~=. & black~=. & hisp~=. & female~=. & jobten~=. & indten~=. & occten~=.)
+
+. 
+. drop if female==1
+(100,528 observations deleted)
+
+. 
+. gen sample1=0
+
+. replace sample1=1 if (age>=22 & age<=33) & cond==1
+(21,048 real changes made)
+
+. gen sample2=0
+
+. replace sample2=1 if (age>=22 & age<=33) & cond==1 & wkswk_pcy >= 26
+(19,363 real changes made)
+
+. gen sample3=0
+
+. replace sample3=1 if (age>=22 & age<=37) & cond==1 & wkswk_pcy >= 26
+(20,790 real changes made)
+
+. 
+. summ sample*
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+     sample1 |    102,448    .2054506    .4040325          0          1
+     sample2 |    102,448    .1890032    .3915131          0          1
+     sample3 |    102,448    .2029322    .4021844          0          1
+
+. 
+. tab1 year if sample2==1
+
+-> tabulation of year if sample2==1 
+
+       year |      Freq.     Percent        Cum.
+------------+-----------------------------------
+         79 |         68        0.35        0.35
+         80 |        401        2.07        2.42
+         81 |        719        3.71        6.14
+         82 |      1,057        5.46       11.59
+         83 |      1,279        6.61       18.20
+         84 |      1,502        7.76       25.96
+         85 |      1,478        7.63       33.59
+         86 |      1,698        8.77       42.36
+         87 |      1,807        9.33       51.69
+         88 |      1,769        9.14       60.83
+         89 |      1,752        9.05       69.88
+         90 |      1,704        8.80       78.68
+         91 |      1,351        6.98       85.65
+         92 |      1,110        5.73       91.39
+         93 |        954        4.93       96.31
+         94 |        714        3.69      100.00
+------------+-----------------------------------
+      Total |     19,363      100.00
+
+. 
+. * When cond applied, all retained obs have job1iscps=1
+. summ job1iscps if cond==0
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+   job1iscps |     66,410   -1.108448    2.671511         -5          1
+
+. summ job1iscps if cond==1
+
+    Variable |        Obs        Mean    Std. Dev.       Min        Max
+-------------+---------------------------------------------------------
+   job1iscps |     29,635           1           0          1          1
+
+. 
+. 
+. * ind, occ, job - with person FEs (This is NBER specification minus location tenure measures, plus added education)
+. 
+. xtset caseid year
+       panel variable:  caseid (strongly balanced)
+        time variable:  year, 79 to 94
+                delta:  1 unit
+
+. xtreg lnrhw jobten job2 indten ind2 occten occ2 _E* _Y* if sample2==1 [w=custwt], fe cluster(caseid)
+(analytic weights assumed)
+
+Fixed-effects (within) regression               Number of obs     =     19,363
+Group variable: caseid                          Number of groups  =      2,966
+
+R-sq:                                           Obs per group:
+     within  = 0.2152                                         min =          1
+     between = 0.1028                                         avg =        6.5
+     overall = 0.1216                                         max =         12
+
+                                                F(24,2965)        =      51.76
+corr(u_i, Xb)  = -0.0835                        Prob > F          =     0.0000
+
+                             (Std. Err. adjusted for 2,966 clusters in caseid)
+------------------------------------------------------------------------------
+             |               Robust
+       lnrhw |      Coef.   Std. Err.      t    P>|t|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+      jobten |   .0064693   .0085177     0.76   0.448    -.0102318    .0231705
+        job2 |  -.0008855   .0006795    -1.30   0.193    -.0022178    .0004468
+      indten |   .0210919   .0079797     2.64   0.008     .0054456    .0367382
+        ind2 |  -.0012158   .0006414    -1.90   0.058    -.0024733    .0000418
+      occten |   .0217846   .0060789     3.58   0.000     .0098653     .033704
+        occ2 |  -.0011209   .0004522    -2.48   0.013    -.0020075   -.0002342
+ _Eedgrp4__1 |   .0403194   .0512185     0.79   0.431    -.0601081    .1407469
+ _Eedgrp4__3 |   .0105363   .0405631     0.26   0.795    -.0689984     .090071
+ _Eedgrp4__4 |   .3105167    .055759     5.57   0.000     .2011865     .419847
+   _Yyear_80 |  -.0756698   .0444439    -1.70   0.089    -.1628137    .0114742
+   _Yyear_81 |  -.0515849   .0439091    -1.17   0.240    -.1376802    .0345104
+   _Yyear_82 |   .0081202   .0440212     0.18   0.854    -.0781949    .0944354
+   _Yyear_83 |  -.0262742    .044705    -0.59   0.557    -.1139302    .0613818
+   _Yyear_84 |  -.0045701   .0447002    -0.10   0.919    -.0922166    .0830764
+   _Yyear_85 |   .0324339   .0448846     0.72   0.470    -.0555742     .120442
+   _Yyear_86 |    .073557   .0454269     1.62   0.106    -.0155145    .1626285
+   _Yyear_87 |   .1420151   .0455501     3.12   0.002      .052702    .2313281
+   _Yyear_88 |   .1980132   .0462514     4.28   0.000     .1073251    .2887012
+   _Yyear_89 |    .195278   .0462015     4.23   0.000     .1046877    .2858683
+   _Yyear_90 |   .2364661   .0467954     5.05   0.000     .1447114    .3282208
+   _Yyear_91 |   .2490143   .0472453     5.27   0.000     .1563775    .3416512
+   _Yyear_92 |   .2613556   .0480032     5.44   0.000     .1672326    .3554786
+   _Yyear_93 |   .2859994   .0488949     5.85   0.000     .1901281    .3818707
+   _Yyear_94 |   .3333609   .0502634     6.63   0.000     .2348062    .4319155
+       _cons |   2.313268   .0461764    50.10   0.000     2.222727    2.403809
+-------------+----------------------------------------------------------------
+     sigma_u |  .34979942
+     sigma_e |  .25597041
+         rho |  .65126314   (fraction of variance due to u_i)
+------------------------------------------------------------------------------
+
+. 
+. * compute implied returns going from two to three years of tenure and standard errors 
+. * These are for 22 to 33 year olds (main sample)
+. nlcom 1*_b[indten] + 5*_b[ind2]
+
+       _nl_1:  1*_b[indten] + 5*_b[ind2]
+
+------------------------------------------------------------------------------
+       lnrhw |      Coef.   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+       _nl_1 |    .015013   .0054857     2.74   0.006     .0042611    .0257648
+------------------------------------------------------------------------------
+
+. nlcom 1*_b[occten] + 5*_b[occ2]
+
+       _nl_1:  1*_b[occten] + 5*_b[occ2]
+
+------------------------------------------------------------------------------
+       lnrhw |      Coef.   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+       _nl_1 |   .0161803    .004582     3.53   0.000     .0071997     .025161
+------------------------------------------------------------------------------
+
+. nlcom 1*_b[jobten] + 5*_b[job2]
+
+       _nl_1:  1*_b[jobten] + 5*_b[job2]
+
+------------------------------------------------------------------------------
+       lnrhw |      Coef.   Std. Err.      z    P>|z|     [95% Conf. Interval]
+-------------+----------------------------------------------------------------
+       _nl_1 |   .0020416   .0062564     0.33   0.744    -.0102207     .014304
+------------------------------------------------------------------------------
+
+. 
+. log close
+      name:  <unnamed>
+       log:  H:\Other\Paper Codes for Uploading\BPEA\NLS_Materials\Table_6\table6_79.log
+  log type:  text
+ closed on:   3 Mar 2020, 17:04:10
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
