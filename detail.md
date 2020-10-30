@@ -66,12 +66,12 @@
 
 ## NLS_Materials
 
-*Note that none of the raw NLS data are provided. The do-files under data sets take minimally processed data from the NLS Investigator website and create the **xxxtenure.dta** data sets, primarily by constructing measures of industry, occupation, and job tenure. The final NLS data sets used to construct the tables and figures are provided.*
+*Note that none of the raw NLS data are provided. The do-files in the **Data Set Construction** folder take minimally processed data from the NLS Investigator website and create the **xxxtenure.dta** data sets, primarily by constructing measures of industry, occupation, and job tenure. The final NLS data sets used to construct the tables and figures are provided.*
 
 - **Data set Construction**
   - **make_tenurevarsYM.do** – uses raw NLS YM data to construct the final NLSYM data set **nlsym_tenure.dta**. 
   - **make_tenurevars79.do** – uses raw NLSY 1979 data, spanning 1979 to 1994, to construct the final 1979 NLSY data set **nlsy79tenure.dta**.
-  - **make_tenurevars97.dta** – uses raw NLSY 1997 data, spanning 1997 to 2013, to construct the final 1997 NLSY data set **nlsy97tenure2013.dta**.
+  - **make_tenurevars97.do** – uses raw NLSY 1997 data, spanning 1997 to 2013, to construct the final 1997 NLSY data set **nlsy97tenure2013.dta**.
 
 - **Table 5. Average Hourly Wage for Jobs Held for Less than One Year for Men Ages 22-33**
   - **table5_ym.do** – merges **nlsym_tenure.dta** and **usurate16up.dta** and creates the coefficients in the left-most column (NLSM) of Table 5.
@@ -85,23 +85,23 @@
 
 - **Table 7. Nested Tests of Contracting Models**
   - **table7_79.do** – merges **nlsy79tenure.dta** and **usurate16up.dta** and creates the coefficients in the NLSY79 column of Table 7.
-  - **table7_97.do** – merges **nlsy97tenure2013.dta** and **usurate16up.dta** and creates the coefficients in the right-most column (NLSY97) of Table 7. The regression output is saved in bd1997.doc. **These results do not match published but do match earlier log file.**
+  - **table7_97.do** – merges **nlsy97tenure2013.dta** and **usurate16up.dta** and creates the coefficients in the right-most column (NLSY97) of Table 7. The regression output is saved in bd1997.doc. Current and initial unemployment rate coefficients/SEs in this column do not perfectly match the published version but does match the original log file; differences are immaterial.
 
 ## PSID_CPS_Materials 
 
-*Note that none of the raw CPS data set can be downloaded from IPUMS, or may be available upon request.*
+*Note that the raw CPS data set is not provided, although it can be downloaded from IPUMS, and may be available upon request.*
 
 - **Data set Construction**
   - **cpscovariates.do** – cleans the raw CPS data set (**cps_00026.dta**) and merges with **bds_e_st_releast.csv**, state-level establishment data from the Census Bureau’s Business Dynamics Statistics program (1977-2013), to create **cpscovariates.dta**. It also creates **ipums3565.dta**.
 
 - **Table 2, 7, & A5**
-  - **startwage.do** – uses **J206031.txt**, raw PSID data, to construct column 1 **(Not matched in paper but matched with original log file)** and 2 in Table 7. It also creates **startwagepsid.gph**, Appendix Figure A5. A CSV file with this data is also constructed, called **startwagepsid.csv**. The following data sets are used in this do-file:
+  - **startwage.do** – uses **J206031.txt**, raw PSID data, to construct column 1 **(Column 1 does not perfectly match the published version but matches the original log file; differences are immaterial.)** and 2 in Table 7. It also creates **startwagepsid.gph**, Appendix Figure A5. A CSV file with this data is also constructed, called **startwagepsid.csv**. The following data sets are used in this do-file:
     - **urateus.dta** – US unemployment rate data.
     - **urateusyb.dta** – US unemployment rate data.
     - **urateusyear.dta** – US unemployment rate data.
 
 - **Tables 4 & A6; Figures 6, 10, & 12**
-  - **stateregs.do** – merges state-year labor market flows with covariates from the CPS, creates state-trends in labor market fluidity, runs the PCA to combine the trends, and performs most of the analysis reported in Section 3. **statefig.gph** is Figure 6. **regfig.gph** is Figure 10. **hrfig.gph** is Figure 12. Table 4 and Table A6 **(Matched other than column 6, but original log file matches)** are also created.  It also calculates the correlations of declines in fluidity, and constructs the data sets **wharton.dta**, **union.dta**, **statepop6010.dta**, and **stateregs.dta**. The following data sets are used in this do-file:
+  - **stateregs.do** – merges state-year labor market flows with covariates from the CPS, creates state-trends in labor market fluidity, runs the PCA to combine the trends, and performs most of the analysis reported in Section 3. **statefig.gph** is Figure 6. **regfig.gph** is Figure 10. **hrfig.gph** is Figure 12. Table 4 and Table A6 are also created.  It also calculates the correlations of declines in fluidity, and constructs the data sets **wharton.dta**, **union.dta**, **statepop6010.dta**, and **stateregs.dta**. The following data sets are used in this do-file:
     - **State_Union_Membership_Density_1964-2015.csv** – state-level union membership data.
     - **WHARTON LAND USE REGULATION DATA_1_24_2008.dta** – data from the Wharton Land Use Survey.
     - **stateur.dta** – state-level unemployment data from the BLS.
